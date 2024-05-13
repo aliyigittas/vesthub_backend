@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
-
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 
@@ -22,11 +20,43 @@ public class DataController {
 
 
     @PostMapping("/api/login")
-    public boolean receiveDataFromSignIn(@RequestBody String data) {
+    public String receiveDataFromSignIn(@RequestBody String data) {
 
         System.out.println("Received data from frontend: " + data); 
-        
-        return true;
+        try 
+        {
+            // Initialize ObjectMapper
+            ObjectMapper mapper = new ObjectMapper();
+            
+            // Parse JSON string to User object
+            User user = mapper.readValue(data, User.class);
+            
+            // Check if user exists in the database
+            if (dbAdapter.checkUserExists(user.getEmail())) 
+            {
+                // Get user from database
+                User userFromDB = dbAdapter.signIn(user.getEmail(), user.getPassword());
+                
+                // Check if user exists
+                if (userFromDB != null) 
+                {
+                    // Convert User object to JSON string
+                    String userJson = mapper.writeValueAsString(userFromDB);
+                    
+                    // Return JSON string
+                    return userJson;
+                }
+                else 
+                {
+                    return null;
+                }
+            }
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @PostMapping("/api/register")

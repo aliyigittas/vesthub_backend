@@ -47,5 +47,31 @@ public class DatabaseAdapter {
         return count > 0;
     }
 
+    public User signIn(String email, String password) 
+    {
+        List<Map<String, Object>> userToBeConverted =  jdbcTemplate.queryForList("SELECT * FROM users WHERE email = ? AND password = ?", email, password);
+        User user = new User();
+        for (Map<String, Object> map : userToBeConverted) 
+        {
+            user.setName((String) map.get("name"));
+            user.setSurname((String) map.get("surname"));
+            user.setEmail((String) map.get("email"));
+            user.setPhone((String) map.get("phone"));
+            user.setFullAddress((String) map.get("fullAddress"));
+            user.setCity((String) map.get("city"));
+            user.setCountry((String) map.get("country"));
+            user.setStatus((int) map.get("status"));
+            user.setProfilePicture((String) map.get("profilePicture"));
+        }
+
+        //if there is no such user
+        if (user.getName() == null) 
+        {
+            return null;
+        }
+        
+        return user;
+    }
+
 
 }
