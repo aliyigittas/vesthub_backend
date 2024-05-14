@@ -36,7 +36,7 @@ public class DatabaseAdapter {
         return gson.toJson(resultSet);
     }
 
-    public void insertUser(String name, String surname, String email, String phone, String password, String fullAddress, String city, String country, boolean status) 
+    public void insertUser(String name, String surname, String email, String phone, String password, String fullAddress, String city, String country, int status) 
     {
         jdbcTemplate.update("INSERT INTO users (name, surname, email, phone, password, fullAddress, city, country, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", name, surname, email, phone, password, fullAddress, city, country, status);
     }

@@ -76,7 +76,7 @@ public class DataController {
                 return false;
             }
             //insert database
-            dbAdapter.insertUser(user.getName(), user.getSurname(), user.getEmail(), "", user.getPassword(), "", "", "", false);
+            dbAdapter.insertUser(user.getName(), user.getSurname(), user.getEmail(), user.getPhone(), user.getPassword(), user.getFullAddress(), user.getCity(), user.getCountry(), 1);
             
             return true;
         } 
