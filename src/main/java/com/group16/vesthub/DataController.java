@@ -1,5 +1,9 @@
 package com.group16.vesthub;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.sql.DataSource;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,10 +16,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RestController
 
 public class DataController {
-    
+    public HashMap<String, Integer> housefeauter = new HashMap<String, Integer>();
     private DatabaseAdapter dbAdapter;
     public DataController(DataSource dataSource) {
         dbAdapter = new DatabaseAdapter(dataSource);
+        housefeauter.put("fiberInternet", 0);
+        housefeauter.put("airConditioner", 0);
+        housefeauter.put("floorHeating", 0);
+        housefeauter.put("fireplace", 0);
+        housefeauter.put("terrace", 0);
+        housefeauter.put("satellite", 0);
+        housefeauter.put("parquet", 0);
+        housefeauter.put("steelDoor", 0);
+        housefeauter.put("furnished", 0);
+        housefeauter.put("insulation", 0);
     }
 
 
@@ -86,6 +100,36 @@ public class DataController {
             return false;
         }
       
+    }
+
+    @PostMapping("/api/CreateListing")
+    public boolean receiveDataFromAddHouse(@RequestBody String data) 
+    {
+        try 
+        {
+            // Initialize ObjectMapper
+            ObjectMapper mapper = new ObjectMapper();
+
+            ArrayList<String> houseFeatures = new ArrayList<String>();
+            
+                
+            
+            // Parse JSON string to House object
+            House house = mapper.readValue(data, House.class);
+
+            // Print received data
+            System.out.println("Received data from frontend: " + data);
+            
+            //insert database
+            dbAdapter.insertHouse(house.getOwnerID(), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), house.getSaleRent(), house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), house.getStatus(), house.getHouseType());
+            
+            return true;
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 
