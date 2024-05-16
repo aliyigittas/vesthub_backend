@@ -33,12 +33,13 @@ public class House
     private int insulation;
     private String status;
     private String houseType;
+    private String keyFeatures[];
 
     public House() 
     {
     }
 
-    public House(int id, int ownerID, String title, String description, String city, String distinct, String street, String fullAddress, int price, int numOfBathroom, int numOfBedroom, String numOfRooms, int area, double lat, double lng, String saleRent, int approved, int floor, int totalFloor, int fiberInternet, int airConditioner, int floorHeating, int fireplace, int terrace, int satellite, int parquet, int steelDoor, int furnished, int insulation, String status, String houseType) 
+    public House(int id, int ownerID, String title, String description, String city, String distinct, String street, String fullAddress, int price, int numOfBathroom, int numOfBedroom, String numOfRooms, int area, double lat, double lng, String saleRent, int approved, int floor, int totalFloor, int fiberInternet, int airConditioner, int floorHeating, int fireplace, int terrace, int satellite, int parquet, int steelDoor, int furnished, int insulation, String status, String houseType, String keyFeatures[]) 
     {
         this.id = id;
         this.ownerID = ownerID;
@@ -71,6 +72,7 @@ public class House
         this.insulation = insulation;
         this.status = status;
         this.houseType = houseType;
+        this.keyFeatures = keyFeatures; //Yeni
     }
 
     public int getId() 
@@ -383,5 +385,12 @@ public class House
         this.houseType = houseType;
     }
 
+    public String[] getKeyFeatures() {
+        return keyFeatures;
+    }
+
+    public void setKeyFeatures(String[] keyFeatures) {
+        this.keyFeatures = keyFeatures;
+    }
 }
 

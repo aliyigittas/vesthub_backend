@@ -59,6 +59,7 @@ public class DataController {
                 {
                     // Convert User object to JSON string
                     String userJson = mapper.writeValueAsString(userFromDB);
+                    VesthubApplication.currentlyLoggedIn = dbAdapter.getOwnerID(user.getEmail()); //ownerID için
                     
                     // Return JSON string
                     return userJson;
@@ -120,16 +121,44 @@ public class DataController {
             List<String> keyFeatures = mapper.convertValue(keyFeaturesNode, new TypeReference<List<String>>() {});
             
             // Parse JSON string to House object
-            //House house = mapper.readValue(data, House.class);
-
+            House house = mapper.readValue(data, House.class);
+            house.setOwnerID(VesthubApplication.currentlyLoggedIn); //owner
+            house.setApproved(0);
+            //parse the keyfeatures array
+            for (int i = 0; i < keyFeatures.size(); i++) {
+                String feature = keyFeatures.get(i);
+                if (feature.equals("Fiber Internet")) {
+                    house.setFiberInternet(1);
+                } else if (feature.equals("Air Conditioner")) {
+                    house.setAirConditioner(1);
+                } else if (feature.equals("Floor Heating")) {
+                    house.setFloorHeating(1);
+                } else if (feature.equals("Fireplace")) {
+                    house.setFireplace(1);
+                } else if (feature.equals("Terrace")) {
+                    house.setTerrace(1);
+                } else if (feature.equals("Satellite")) {
+                    house.setSatellite(1);
+                } else if (feature.equals("Parquet")) {
+                    house.setParquet(1);
+                } else if (feature.equals("Steel Door")) {
+                    house.setSteelDoor(1);
+                } else if (feature.equals("Furnished")) {
+                    house.setFurnished(1);
+                } else if (feature.equals("Insulation")) {
+                    house.setInsulation(1);
+                }
+            }
             // Print received data
             System.out.println("Received data from frontend: " + data);
-
             System.out.println("Key Features: " + keyFeatures);
+            System.out.println("Current user: " + VesthubApplication.currentlyLoggedIn);
             
             //insert database
             //dbAdapter.insertHouse(house.getOwnerID(), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), house.getSaleRent(), house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), house.getStatus(), house.getHouseType());
-            
+
+            //Şu an tüm özellikler formdan gelmediği için dummy insert
+            dbAdapter.insertHouse(house.getOwnerID(), house.getTitle(), house.getDescription(), "Istanbul", "Maltepe", "Cinar", house.getFullAddress(), house.getPrice(), 1, 1, "2+1", 75, 45.2, 45.2, "Sale", house.getApproved(), 2, 5, house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), "Available", "Apartment");
             return true;
         } 
         catch (Exception e) 

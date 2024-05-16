@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @SpringBootApplication
 public class VesthubApplication {
 
+	public static int currentlyLoggedIn;
 	public static void main(String[] args) {
 		SpringApplication.run(VesthubApplication.class, args);
 	}
