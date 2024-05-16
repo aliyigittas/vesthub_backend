@@ -3,6 +3,7 @@ package com.group16.vesthub;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.sql.DataSource;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -109,19 +112,23 @@ public class DataController {
         {
             // Initialize ObjectMapper
             ObjectMapper mapper = new ObjectMapper();
-
-            ArrayList<String> houseFeatures = new ArrayList<String>();
             
-                
+            JsonNode rootNode = mapper.readTree(data);
+
+        // Extract keyFeatures array from the JsonNode
+            JsonNode keyFeaturesNode = rootNode.get("keyFeatures");
+            List<String> keyFeatures = mapper.convertValue(keyFeaturesNode, new TypeReference<List<String>>() {});
             
             // Parse JSON string to House object
-            House house = mapper.readValue(data, House.class);
+            //House house = mapper.readValue(data, House.class);
 
             // Print received data
             System.out.println("Received data from frontend: " + data);
+
+            System.out.println("Key Features: " + keyFeatures);
             
             //insert database
-            dbAdapter.insertHouse(house.getOwnerID(), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), house.getSaleRent(), house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), house.getStatus(), house.getHouseType());
+            //dbAdapter.insertHouse(house.getOwnerID(), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), house.getSaleRent(), house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), house.getStatus(), house.getHouseType());
             
             return true;
         } 
