@@ -35,7 +35,6 @@ public class DataController {
         housefeauter.put("insulation", 0);
     }
 
-
     @PostMapping("/api/login")
     public String receiveDataFromSignIn(@RequestBody String data) {
 
