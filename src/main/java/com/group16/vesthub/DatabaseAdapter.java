@@ -101,4 +101,11 @@ public class DatabaseAdapter {
         return jdbcTemplate.queryForObject("SELECT pixels FROM images WHERE houseID = ?", String.class, houseID);
     }
 
+    public List<House> getFeaturedHomes ()
+    {
+        //return jdbcTemplate.query("SELECT * FROM houses WHERE approved = 1", (rs, rowNum) -> new House(rs.getInt("id"), rs.getInt("ownerID"), rs.getString("title"), rs.getString("description"), rs.getString("city"), rs.getString("distinct"), rs.getString("street"), rs.getString("fullAddress"), rs.getInt("price"), rs.getInt("numOfBathroom"), rs.getInt("numOfBedroom"), rs.getString("numOfRooms"), rs.getInt("area"), rs.getDouble("lat"), rs.getDouble("lng"), rs.getString("saleRent"), rs.getInt("approved"), rs.getInt("floor"), rs.getInt("totalFloor"), rs.getInt("fiberInternet"), rs.getInt("airConditioner"), rs.getInt("floorHeating"), rs.getInt("fireplace"), rs.getInt("terrace"), rs.getInt("satellite"), rs.getInt("parquet"), rs.getInt("steelDoor"), rs.getInt("furnished"), rs.getInt("insulation"), rs.getString("status"), rs.getString("houseType"), null, null));
+        //return empt array
+        return new ArrayList<House>();
+    }
+
 }

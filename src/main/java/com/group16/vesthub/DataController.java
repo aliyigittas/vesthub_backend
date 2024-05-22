@@ -113,6 +113,20 @@ public class DataController {
         
     }
 
+    @GetMapping("api/featuredHomes")
+    public String getFeaturedHomes() {
+        List<House> featuredHomes = dbAdapter.getFeaturedHomes();
+        System.out.println("Featured Homes: " + featuredHomes.size());
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String featuredHomesJson = mapper.writeValueAsString(featuredHomes);
+            return featuredHomesJson;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @PostMapping("/api/CreateListing")
     public boolean receiveDataFromAddHouse(@RequestBody String data) 
     {
