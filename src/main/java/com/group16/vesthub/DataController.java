@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,20 +20,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RestController
 
 public class DataController {
-    public HashMap<String, Integer> housefeauter = new HashMap<String, Integer>();
+    public HashMap<String, Integer> housefeature = new HashMap<String, Integer>();
     private DatabaseAdapter dbAdapter;
     public DataController(DataSource dataSource) {
         dbAdapter = new DatabaseAdapter(dataSource);
-        housefeauter.put("fiberInternet", 0);
-        housefeauter.put("airConditioner", 0);
-        housefeauter.put("floorHeating", 0);
-        housefeauter.put("fireplace", 0);
-        housefeauter.put("terrace", 0);
-        housefeauter.put("satellite", 0);
-        housefeauter.put("parquet", 0);
-        housefeauter.put("steelDoor", 0);
-        housefeauter.put("furnished", 0);
-        housefeauter.put("insulation", 0);
+        housefeature.put("fiberInternet", 0);
+        housefeature.put("airConditioner", 0);
+        housefeature.put("floorHeating", 0);
+        housefeature.put("fireplace", 0);
+        housefeature.put("terrace", 0);
+        housefeature.put("satellite", 0);
+        housefeature.put("parquet", 0);
+        housefeature.put("steelDoor", 0);
+        housefeature.put("furnished", 0);
+        housefeature.put("insulation", 0);
     }
 
     @PostMapping("/api/login")
@@ -105,6 +106,13 @@ public class DataController {
       
     }
 
+
+    @GetMapping("/api/getPhoto")
+    public String getPhoto() {
+        return dbAdapter.getPhoto(19);
+        
+    }
+
     @PostMapping("/api/CreateListing")
     public boolean receiveDataFromAddHouse(@RequestBody String data) 
     {
@@ -115,10 +123,14 @@ public class DataController {
             
             JsonNode rootNode = mapper.readTree(data);
 
-        // Extract keyFeatures array from the JsonNode
+            // Extract keyFeatures array from the JsonNode
             JsonNode keyFeaturesNode = rootNode.get("keyFeatures");
             List<String> keyFeatures = mapper.convertValue(keyFeaturesNode, new TypeReference<List<String>>() {});
-            
+
+            JsonNode imagesNode = rootNode.get("images");
+            List<String> images = mapper.convertValue(imagesNode, new TypeReference<List<String>>() {});
+
+
             // Parse JSON string to House object
             House house = mapper.readValue(data, House.class);
             house.setOwnerID(VesthubApplication.currentlyLoggedIn); //owner
@@ -148,16 +160,22 @@ public class DataController {
                     house.setInsulation(1);
                 }
             }
-            // Print received data
-            System.out.println("Received data from frontend: " + data);
-            System.out.println("Key Features: " + keyFeatures);
-            System.out.println("Current user: " + VesthubApplication.currentlyLoggedIn);
+
             
             //insert database
             //dbAdapter.insertHouse(house.getOwnerID(), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), house.getSaleRent(), house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), house.getStatus(), house.getHouseType());
 
             //Şu an tüm özellikler formdan gelmediği için dummy insert
             dbAdapter.insertHouse(house.getOwnerID(), house.getTitle(), house.getDescription(), "Istanbul", "Maltepe", "Cinar", house.getFullAddress(), house.getPrice(), 1, 1, "2+1", 75, 45.2, 45.2, "Sale", house.getApproved(), 2, 5, house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), "Available", "Apartment");
+            
+            
+            
+            int lastHouseID = dbAdapter.getLatestHouseID();
+            System.out.println("Last house ID: " + lastHouseID);
+            for (int i = 0; i < images.size(); i++) {
+                dbAdapter.insertImage(images.get(i), lastHouseID);
+            }
+
             return true;
         } 
         catch (Exception e) 
