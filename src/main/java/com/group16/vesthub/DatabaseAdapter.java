@@ -96,9 +96,17 @@ public class DatabaseAdapter {
         jdbcTemplate.update("INSERT INTO images (houseID, pixels) VALUES (?, ?)", houseID, image);
     }
 
-    public String getPhoto (int houseID) 
+    public String[] getPhotos (int houseID) 
     {
-        return jdbcTemplate.queryForObject("SELECT pixels FROM images WHERE houseID = ?", String.class, houseID);
+        List<Map<String, Object>> images = jdbcTemplate.queryForList("SELECT pixels FROM images WHERE houseID = ?", houseID);
+        String[] photos = new String[images.size()];
+        int i = 0;
+        for (Map<String, Object> map : images) 
+        {
+            photos[i] = (String) map.get("pixels");
+            i++;
+        }
+        return photos;
     }
 
     public List<House> getFeaturedHomes ()

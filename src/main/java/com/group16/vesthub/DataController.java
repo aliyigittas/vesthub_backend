@@ -109,9 +109,9 @@ public class DataController {
       
     }
 
-    @GetMapping("/api/getPhoto")
-    public String getPhoto() {
-        return dbAdapter.getPhoto(19);
+    @GetMapping("/api/getPhotos/{id}")
+    public String[] getPhoto(@PathVariable int id) {
+        return dbAdapter.getPhotos(id);
         
     }
 

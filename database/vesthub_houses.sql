@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `vesthub` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `vesthub`;
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for macos13 (arm64)
 --
 -- Host: localhost    Database: vesthub
 -- ------------------------------------------------------
--- Server version	8.0.35
+-- Server version	8.3.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -32,7 +32,7 @@ CREATE TABLE `houses` (
   `city` varchar(45) NOT NULL,
   `distinct` varchar(45) NOT NULL,
   `street` varchar(45) NOT NULL,
-  `fullAddress` varchar(45) NOT NULL,
+  `fullAddress` varchar(500) NOT NULL,
   `price` int NOT NULL,
   `numOfBathroom` int NOT NULL,
   `numOfBedroom` int NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE `houses` (
   `houseType` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,6 +67,7 @@ CREATE TABLE `houses` (
 
 LOCK TABLES `houses` WRITE;
 /*!40000 ALTER TABLE `houses` DISABLE KEYS */;
+INSERT INTO `houses` VALUES (1,1,'EVVVVtitle','                <HomeModal show={show} setShow={() => setShow(false)} home={Home} />\n','Istanbul','Maltepe','Cinar','fullladresss',12345555,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,1,1,0,0,0,0,1,0,0,'Available','Apartment'),(2,1,'EVVVVtitle','                <HomeModal show={show} setShow={() => setShow(false)} home={Home} />\n','Istanbul','Maltepe','Cinar','fullladresss',12345555,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(3,1,'EVVVVtitle','                <HomeModal show={show} setShow={() => setShow(false)} home={Home} />\n','Istanbul','Maltepe','Cinar','fullladresss',12345555,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(4,1,'aaa','11','Istanbul','Maltepe','Cinar','a',2,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(5,1,'aaa','11','Istanbul','Maltepe','Cinar','a',2,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(6,1,'aaa','11','Istanbul','Maltepe','Cinar','a',2,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(7,1,'aaa','11','Istanbul','Maltepe','Cinar','a',2,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(8,0,'mehmet','woıuehfuhef','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',1000000,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(9,0,'mehmet','gjygyjgjhgjhg','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',1000000,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(10,0,'mehmet','gjygyjgjhgjhg','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',1000000,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(11,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(12,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(13,0,'hgahgds','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(14,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(15,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(16,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(17,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(18,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(19,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(20,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(21,1,'27may','EV','Istanbul','Maltepe','Cinar','Hürriyet, 256. Sk. No:7, 34250 Gaziosmanpaşa/İstanbul, Türkiye',123444444,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(22,0,'27may','EV','Istanbul','Maltepe','Cinar','Hürriyet, 256. Sk. No:7, 34250 Gaziosmanpaşa/İstanbul, Türkiye',123444444,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(23,0,'28mayıs','okul','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',1234,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(24,0,'28mayıs','okul','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',1234,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(25,0,'khas','okul','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',1234,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,1,1,1,0,0,1,1,1,1,0,'Available','Apartment'),(26,0,'khas','okul','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',1234,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,1,1,1,0,0,1,1,1,1,0,'Available','Apartment'),(27,0,'khas2','okul2','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',12342,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,1,1,0,1,0,1,1,1,1,0,'Available','Apartment'),(28,0,'khas2','okul2','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',12342,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment');
 /*!40000 ALTER TABLE `houses` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -79,4 +80,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-13 17:14:26
+-- Dump completed on 2024-05-28 11:19:12
