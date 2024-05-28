@@ -16,27 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 
 public class DataController {
-    public HashMap<String, Integer> housefeature = new HashMap<String, Integer>();
+    
     private DatabaseAdapter dbAdapter;
     public DataController(DataSource dataSource) {
         dbAdapter = new DatabaseAdapter(dataSource);
-        
-        housefeature.put("fiberInternet", 0);
-        housefeature.put("airConditioner", 0);
-        housefeature.put("floorHeating", 0);
-        housefeature.put("fireplace", 0);
-        housefeature.put("terrace", 0);
-        housefeature.put("satellite", 0);
-        housefeature.put("parquet", 0);
-        housefeature.put("steelDoor", 0);
-        housefeature.put("furnished", 0);
-        housefeature.put("insulation", 0);
-        
     }
 
     @PostMapping("/api/login")
@@ -115,6 +105,74 @@ public class DataController {
         
     }
 
+    @GetMapping("/api/myListings/{ownerMail}")
+    public String getMyHouses(@PathVariable String ownerMail) {
+        int id = dbAdapter.getOwnerID(ownerMail);
+        List<House> myHouses = dbAdapter.getMyHouses(id);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String myHousesJson = mapper.writeValueAsString(myHouses);
+            return myHousesJson;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @GetMapping("/api/favorites/{ownerMail}")
+    public String getMyFavorites(@PathVariable String ownerMail) {
+        int id = dbAdapter.getOwnerID(ownerMail);
+        List<House> myFavoriteHouses = dbAdapter.getMyFavorites(id);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String myHousesJson = mapper.writeValueAsString(myFavoriteHouses);
+            return myHousesJson;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @PostMapping("/api/addFavorite")
+    public boolean addFavorite(@RequestBody String data) {
+        try {
+            // Initialize ObjectMapper
+            ObjectMapper mapper = new ObjectMapper();
+            
+            // Parse JSON string to User object
+            JsonNode rootNode = mapper.readTree(data);
+            int houseID = rootNode.get("houseID").asInt();
+            String ownerMail = rootNode.get("ownerMail").asText();
+            int ownerID = dbAdapter.getOwnerID(ownerMail);
+            dbAdapter.addFavorite(ownerID, houseID);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @PostMapping("/api/removeFavorite")
+    public boolean removeFavorite(@RequestBody String data) {
+        try {
+            // Initialize ObjectMapper
+            ObjectMapper mapper = new ObjectMapper();
+            
+            // Parse JSON string to User object
+            JsonNode rootNode = mapper.readTree(data);
+            int houseID = rootNode.get("houseID").asInt();
+            String ownerMail = rootNode.get("ownerMail").asText();
+            int ownerID = dbAdapter.getOwnerID(ownerMail);
+            dbAdapter.removeFavorite(ownerID, houseID);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //check favorite
+
     @GetMapping("api/featuredHomes")
     public String getFeaturedHomes() {
         List<House> featuredHomes = dbAdapter.getFeaturedHomes();
@@ -182,8 +240,9 @@ public class DataController {
             //dbAdapter.insertHouse(house.getOwnerID(), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), house.getSaleRent(), house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), house.getStatus(), house.getHouseType());
 
             //Şu an tüm özellikler formdan gelmediği için dummy insert
-            dbAdapter.insertHouse(house.getOwnerID(), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getFullAddress(), house.getPrice(), 1, 1, "2+1", 75, house.getLat(), house.getLng(), "Sale", house.getApproved(), 2, 5, house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), "Available", "Apartment");
-            
+            System.out.println("Barandan gelen"+ keyFeatures);
+            System.out.println("AAAAAAAA: "+ house.getKeyFeatures()[1]);
+            dbAdapter.insertHouse(dbAdapter.getOwnerID(house.getOwnerMail()), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getFullAddress(), house.getPrice(), 1, 1, "2+1", 75, house.getLat(), house.getLng(), "Sale", house.getApproved(), 2, 5, house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), "Available", "Apartment", house.getOwnerMail());
             
             
             int lastHouseID = dbAdapter.getLatestHouseID();

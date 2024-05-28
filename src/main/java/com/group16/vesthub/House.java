@@ -4,6 +4,7 @@ public class House
 {
     private int id;
     private int ownerID;
+    private String ownerMail;
     private String title;
     private String description;
     private String city;
@@ -40,10 +41,11 @@ public class House
     {
     }
 
-    public House(int id, int ownerID, String title, String description, String city, String distinct, String street, String fullAddress, int price, int numOfBathroom, int numOfBedroom, String numOfRooms, int area, double lat, double lng, String saleRent, int approved, int floor, int totalFloor, int fiberInternet, int airConditioner, int floorHeating, int fireplace, int terrace, int satellite, int parquet, int steelDoor, int furnished, int insulation, String status, String houseType, String keyFeatures[], String images[]) 
+    public House(int id, int ownerID, String ownerMail, String title, String description, String city, String distinct, String street, String fullAddress, int price, int numOfBathroom, int numOfBedroom, String numOfRooms, int area, double lat, double lng, String saleRent, int approved, int floor, int totalFloor, int fiberInternet, int airConditioner, int floorHeating, int fireplace, int terrace, int satellite, int parquet, int steelDoor, int furnished, int insulation, String status, String houseType, String keyFeatures[], String images[]) 
     {
         this.id = id;
         this.ownerID = ownerID;
+        this.ownerMail = ownerMail;
         this.title = title;
         this.description = description;
         this.city = city;
@@ -95,6 +97,16 @@ public class House
     public void setOwnerID(int ownerID) 
     {
         this.ownerID = ownerID;
+    }
+
+    public String getOwnerMail() 
+    {
+        return ownerMail;
+    }
+
+    public void setOwnerMail(String ownerMail) 
+    {
+        this.ownerMail = ownerMail;
     }
 
     public String getTitle() 
