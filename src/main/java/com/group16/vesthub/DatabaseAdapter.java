@@ -103,7 +103,7 @@ public class DatabaseAdapter {
         int i = 0;
         for (Map<String, Object> map : images) 
         {
-            photos[i] = (String) map.get("pixels");
+            photos[i] = String.valueOf(map.get("pixels"));
             i++;
         }
         return photos;
