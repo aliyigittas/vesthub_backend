@@ -176,6 +176,11 @@ public class DataController {
     @GetMapping("api/featuredHomes")
     public String getFeaturedHomes() {
         List<House> featuredHomes = dbAdapter.getFeaturedHomes();
+        //get house photos from databse
+        for (int i = 0; i < featuredHomes.size(); i++) {
+            String[] photos = dbAdapter.getPhotos(featuredHomes.get(i).getId());
+            featuredHomes.get(i).setImages(photos);
+        }
         System.out.println("Featured Homes: " + featuredHomes.size());
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -203,7 +208,13 @@ public class DataController {
 
             JsonNode imagesNode = rootNode.get("images");
             List<String> images = mapper.convertValue(imagesNode, new TypeReference<List<String>>() {});
-
+            /* 
+            for (int i = 0; i < images.size(); i++) {
+                //delete the first part of the string
+                String[] parts = images.get(i).split(",");
+                images.set(i, parts[1]);
+            }
+            */
 
             // Parse JSON string to House object
             House house = mapper.readValue(data, House.class);
@@ -240,8 +251,7 @@ public class DataController {
             //dbAdapter.insertHouse(house.getOwnerID(), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), house.getSaleRent(), house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), house.getStatus(), house.getHouseType());
 
             //Şu an tüm özellikler formdan gelmediği için dummy insert
-            System.out.println("Barandan gelen"+ keyFeatures);
-            System.out.println("AAAAAAAA: "+ house.getKeyFeatures()[1]);
+            
             dbAdapter.insertHouse(dbAdapter.getOwnerID(house.getOwnerMail()), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getFullAddress(), house.getPrice(), 1, 1, "2+1", 75, house.getLat(), house.getLng(), "Sale", house.getApproved(), 2, 5, house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), "Available", "Apartment", house.getOwnerMail());
             
             
