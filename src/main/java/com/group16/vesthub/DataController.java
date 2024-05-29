@@ -192,6 +192,25 @@ public class DataController {
         }
     }
 
+    @GetMapping("/api/result/{param}")
+    public String getSearchResults(@PathVariable String param) {
+        List<House> searchResults = dbAdapter.getAllHouses();
+        //get house photos from databse
+        for (int i = 0; i < searchResults.size(); i++) {
+            String[] photos = dbAdapter.getPhotos(searchResults.get(i).getId());
+            searchResults.get(i).setImages(photos);
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String searchResultsJson = mapper.writeValueAsString(searchResults);
+            return searchResultsJson;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+
     @PostMapping("/api/CreateListing")
     public boolean receiveDataFromAddHouse(@RequestBody String data) 
     {
