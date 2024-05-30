@@ -206,9 +206,7 @@ public class DataController {
 
     @GetMapping("/api/search/{param}")
     public String getSearchResults(@PathVariable String param) {
-        
-
-        
+    
         //parse the string with & delimeter
         String[] params = param.split("&");
         String searchValue = params[0];

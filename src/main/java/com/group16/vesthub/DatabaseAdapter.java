@@ -112,23 +112,23 @@ public class DatabaseAdapter {
 
             if (response[0]==null)
             {
-                if(getCountryMatch(searchValues[i]) != null)
+                if(getCountryMatch(searchValues[i]) != null && response[1]!=searchValues[i] && response[2]!=searchValues[i])
                 {
                     response[0] = getCountryMatch(searchValues[i]);
                 }
             }
 
-            else if (response[1]==null)
+            if (response[1]==null)
             {
-                if(getCityMatch(searchValues[i]) != null)
+                if(getCityMatch(searchValues[i]) != null && response[0]!=searchValues[i] && response[2]!=searchValues[i])
                 {
                     response[1] = getCityMatch(searchValues[i]);
                 }
             }   
                 
-            else if (response[2]==null)
+            if (response[2]==null)
             {
-                if(getDistrictMatch(searchValues[i]) != null)
+                if(getDistrictMatch(searchValues[i]) != null && response[0]!=searchValues[i] && response[1]!=searchValues[i])
                 {
                     response[2] = getDistrictMatch(searchValues[i]);
                 }
@@ -176,6 +176,7 @@ public class DatabaseAdapter {
     {
         //parse the search value with spaces
         String[] searchValues = searchValue.split(" ");
+        System.out.println("Array:"+ searchValues[0]);
         int search_size =searchValues.length;
         String country = null;
         String city = null;
@@ -222,7 +223,7 @@ public class DatabaseAdapter {
 
     public void insertHouse(int ownerID, String title, String description, String city, String distinct, String street, String country ,String fullAddress, int price, int numOfBathroom, int numOfBedroom, String numOfRooms, int area, double lat, double lng, String saleRent, int approved, int floor, int totalFloor, int fiberInternet, int airConditioner, int floorHeating, int fireplace, int terrace, int satellite, int parquet, int steelDoor, int furnished, int insulation, String status, String houseType, String ownerMail) 
     {
-        jdbcTemplate.update("INSERT INTO houses (ownerID, title, description, city, `distinct`, street, country, fullAddress, price, numOfBathroom, numOfBedroom, numOfRooms, area, lat, lng, saleRent, approved, floor, totalFloor, fiberInternet, airConditioner, floorHeating, fireplace, terrace, satellite, parquet, steelDoor, furnished, insulation, status, houseType, ownerMail, uploadDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())", ownerID, title, description, city, distinct, street, country, fullAddress, price, numOfBathroom, numOfBedroom, numOfRooms, area, lat, lng, saleRent, approved, floor, totalFloor, fiberInternet, airConditioner, floorHeating, fireplace, terrace, satellite, parquet, steelDoor, furnished, insulation, status, houseType, ownerMail);
+        jdbcTemplate.update("INSERT INTO houses (ownerID, title, description, city, `distinct`, street, country, fullAddress, price, numOfBathroom, numOfBedroom, numOfRooms, area, lat, lng, saleRent, approved, floor, totalFloor, fiberInternet, airConditioner, floorHeating, fireplace, terrace, satellite, parquet, steelDoor, furnished, insulation, status, houseType, ownerMail, uploadDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())", ownerID, title, description, city, distinct, street, country, fullAddress, price, numOfBathroom, numOfBedroom, numOfRooms, area, lat, lng, saleRent, approved, floor, totalFloor, fiberInternet, airConditioner, floorHeating, fireplace, terrace, satellite, parquet, steelDoor, furnished, insulation, status, houseType, ownerMail);
     }
 
     public void insertImage (String image, int houseID) 
