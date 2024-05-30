@@ -27,12 +27,12 @@ DROP TABLE IF EXISTS `houses`;
 CREATE TABLE `houses` (
   `id` int NOT NULL AUTO_INCREMENT,
   `ownerID` int NOT NULL,
-  `title` varchar(45) NOT NULL,
-  `description` varchar(500) NOT NULL,
+  `title` varchar(5000) NOT NULL,
+  `description` varchar(5000) NOT NULL,
   `city` varchar(45) NOT NULL,
-  `distinct` varchar(45) NOT NULL,
-  `street` varchar(45) NOT NULL,
-  `fullAddress` varchar(500) NOT NULL,
+  `distinct` varchar(100) NOT NULL,
+  `street` varchar(100) NOT NULL,
+  `fullAddress` varchar(1000) NOT NULL,
   `price` int NOT NULL,
   `numOfBathroom` int NOT NULL,
   `numOfBedroom` int NOT NULL,
@@ -56,9 +56,11 @@ CREATE TABLE `houses` (
   `insulation` tinyint NOT NULL,
   `status` varchar(45) NOT NULL,
   `houseType` varchar(45) NOT NULL,
+  `ownerMail` varchar(100) NOT NULL,
+  `uploadDate` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +69,7 @@ CREATE TABLE `houses` (
 
 LOCK TABLES `houses` WRITE;
 /*!40000 ALTER TABLE `houses` DISABLE KEYS */;
-INSERT INTO `houses` VALUES (1,1,'EVVVVtitle','                <HomeModal show={show} setShow={() => setShow(false)} home={Home} />\n','Istanbul','Maltepe','Cinar','fullladresss',12345555,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,1,1,0,0,0,0,1,0,0,'Available','Apartment'),(2,1,'EVVVVtitle','                <HomeModal show={show} setShow={() => setShow(false)} home={Home} />\n','Istanbul','Maltepe','Cinar','fullladresss',12345555,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(3,1,'EVVVVtitle','                <HomeModal show={show} setShow={() => setShow(false)} home={Home} />\n','Istanbul','Maltepe','Cinar','fullladresss',12345555,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(4,1,'aaa','11','Istanbul','Maltepe','Cinar','a',2,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(5,1,'aaa','11','Istanbul','Maltepe','Cinar','a',2,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(6,1,'aaa','11','Istanbul','Maltepe','Cinar','a',2,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(7,1,'aaa','11','Istanbul','Maltepe','Cinar','a',2,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(8,0,'mehmet','woıuehfuhef','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',1000000,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(9,0,'mehmet','gjygyjgjhgjhg','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',1000000,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(10,0,'mehmet','gjygyjgjhgjhg','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',1000000,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(11,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(12,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(13,0,'hgahgds','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(14,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(15,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(16,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(17,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(18,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(19,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(20,0,'hhhghjg','jffjdfhhdfdfgfgd','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',5464,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(21,1,'27may','EV','Istanbul','Maltepe','Cinar','Hürriyet, 256. Sk. No:7, 34250 Gaziosmanpaşa/İstanbul, Türkiye',123444444,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(22,0,'27may','EV','Istanbul','Maltepe','Cinar','Hürriyet, 256. Sk. No:7, 34250 Gaziosmanpaşa/İstanbul, Türkiye',123444444,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(23,0,'28mayıs','okul','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',1234,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(24,0,'28mayıs','okul','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',1234,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment'),(25,0,'khas','okul','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',1234,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,1,1,1,0,0,1,1,1,1,0,'Available','Apartment'),(26,0,'khas','okul','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',1234,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,1,1,1,0,0,1,1,1,1,0,'Available','Apartment'),(27,0,'khas2','okul2','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',12342,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,1,1,0,1,0,1,1,1,1,0,'Available','Apartment'),(28,0,'khas2','okul2','Istanbul','Maltepe','Cinar','Cibali, Kadir Has Cd. NO:3/A, 34000 Fatih/İstanbul, Türkiye',12342,1,1,'2+1',75,45.2,45.2,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment');
+INSERT INTO `houses` VALUES (1,7,'BEYLİKDÜZÜ SAFA DAN ADNAN KAHVECİDE HAVUZLU DENİZ MANZARALI 3+1','SAFA GAYRİMENKUL\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBEYLİKDÜZÜ ADNAN KAHVECİ MAHALLESİNDE ','Beylikdüzü','Beylikdüzü Organize Sanayi Bölgesi','Adnan Kahveci','Adnan Kahveci, Kafkas Cd. No:10, 34528 Beylikdüzü Organize Sanayi Bölgesi/Beylikdüzü/İstanbul, Türkiye',5249000,1,1,'2+1',75,40.99888032791223,28.621226471533216,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment','testtest@trest.com','2024-05-29 18:05:51'),(2,7,'FAİZLERE İNAT İLK EVİM KAMPANYASI! %40 PEŞİNATLA EV SAHİBİ OLUN','RESİMLER DAİRENİN BİRE BİR KENDİNE AİT OLUP FİRMA OLARAK GERÇEK DAİRE GERÇEK  İLAN !!\n\nLION YAPI & MİMARLIK \'DAN BÖLGENİN EMSALSİZ 2+1 SIFIR DAİRELERİ PROJEDE ARAKAT SEÇENEKLERİ BULUNMAKTADIR.\n\nİLK EVİNİ ALACAKLARA EXPER DEĞERİNİN %80\'E KADAR KREDİ İMKANI İLE FAYDALANABİLİRSİNİZ.\n\nYENİ YAPILACAK METRO PROJESİNE YAKIN\n\nDOĞAN ARASLI BULVARINA 10 DK MESAFEDE\n\nÇİFT KATLI 76D İETT HATTI - OTOBÜS VE MİNUBÜS HATLARI\n\nMETROBÜSE ULAŞIM TOPLU TAŞIMALAR İLE 5 DK MESAFEDE\n\nODA SAYISI: 2+1\n\n120M2 BRÜT\n\nKREDİYE UYGUN\n\n1 YIL İÇİN’DE %40 PRİM GARANTİSİ\n \nLION YAPI MİMARLIK KALİTESİ İLE SİZDE EV SAHİBİ OLUN','İstanbul','Esenyurt','Balıkyolu','Balıkyolu, 482. Sk. No:21, 34510 Esenyurt/İstanbul, Türkiye',1680000,1,1,'2+1',75,41.03928961898912,28.69126431333009,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment','testtest@trest.com','2024-05-29 18:05:51'),(3,7,'Oyuncak müzesi','descriptionnnnnnn','İstanbul','Fatih','Yavuz Sultan Selim','Yavuz Sultan Selim, Abdülezelpaşa Cd. No:67, 34083 Fatih/İstanbul, Türkiye',1234578,1,1,'2+1',75,41.02772851470656,28.95654729786987,'Sale',0,2,5,1,1,0,1,0,0,1,1,0,1,'Available','Apartment','testtest@trest.com','2024-05-29 18:10:41');
 /*!40000 ALTER TABLE `houses` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -80,4 +82,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-28 11:19:12
+-- Dump completed on 2024-05-30 12:40:33
