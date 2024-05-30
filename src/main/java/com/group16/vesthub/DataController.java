@@ -163,7 +163,7 @@ public class DataController {
             int houseID = rootNode.get("houseID").asInt();
             String ownerMail = rootNode.get("ownerMail").asText();
             int ownerID = dbAdapter.getOwnerID(ownerMail);
-            dbAdapter.removeFavorite(ownerID, houseID);
+            dbAdapter.updateFavorite(ownerID, houseID, 0);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -303,5 +303,13 @@ public class DataController {
         }
     }
 
+    @GetMapping("/api/checkFavorite")
+    public String checkFavorite(@RequestParam int houseID, @RequestParam String ownerMail) {
+        int ownerID = dbAdapter.getOwnerID(ownerMail);
+        System.out.println("Check ownerId:"+ownerID);
+        boolean isFavorite = dbAdapter.checkFavorite(ownerID, houseID, 1); 
+        return isFavorite ? "true" : "false";
+    }
+    
 }
 

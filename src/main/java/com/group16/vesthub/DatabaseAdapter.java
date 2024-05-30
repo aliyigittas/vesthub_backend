@@ -132,17 +132,22 @@ public class DatabaseAdapter {
 
     public void addFavorite (int userID, int houseID)
     {
-        jdbcTemplate.update("INSERT INTO favorites (userID, houseID, status) VALUES (?, ?, ?)", userID, houseID, 1);
+        if(checkFavorite(userID, houseID, 0) == true){ //if that house liked, and unliked before
+            updateFavorite(userID, houseID, 1);
+        }
+        else{
+            jdbcTemplate.update("INSERT INTO favorites (userID, houseID, status) VALUES (?, ?, ?)", userID, houseID, 1);
+        }
     }
 
-    public void removeFavorite (int userID, int houseID)
+    public void updateFavorite (int userID, int houseID, int status)
     {
-        jdbcTemplate.update("UPDATE favorites SET status = 0 WHERE userID = ? AND houseID = ?", userID, houseID);
+        jdbcTemplate.update("UPDATE favorites SET status = ? WHERE userID = ? AND houseID = ?", status, userID, houseID);
     }
 
-    public boolean checkFavorite (int userID, int houseID)
+    public boolean checkFavorite (int userID, int houseID, int status)
     {
-        int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM favorites WHERE userID = ? AND houseID = ? AND status = 1", Integer.class, userID, houseID);
+        int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM favorites WHERE userID = ? AND houseID = ? AND status = ?", Integer.class, userID, houseID, status);
         return count > 0;
     }
 }
