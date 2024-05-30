@@ -318,6 +318,8 @@ public class DataController {
     public String getHouse(@PathVariable int id) {
         // Get house ID from URL
         House house = dbAdapter.getHouseByID(id);
+        String[] photos = dbAdapter.getPhotos(id);
+        house.setImages(photos);
         ObjectMapper mapper = new ObjectMapper();
         try {
             String houseJson = mapper.writeValueAsString(house);
