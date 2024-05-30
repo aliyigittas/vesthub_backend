@@ -204,9 +204,19 @@ public class DataController {
         }
     }
 
-    @GetMapping("/api/result/{param}")
+    @GetMapping("/api/search/{param}")
     public String getSearchResults(@PathVariable String param) {
-        List<House> searchResults = dbAdapter.getAllHouses();
+        
+
+        
+        //parse the string with & delimeter
+        String[] params = param.split("&");
+        String searchValue = params[0];
+        String saleRent = params[1];
+        String houseType = params[2];
+
+        List<House> searchResults = dbAdapter.getSearchResultsDB(searchValue);
+
         //get house photos from databse
         for (int i = 0; i < searchResults.size(); i++) {
             String[] photos = dbAdapter.getPhotos(searchResults.get(i).getId());
@@ -279,7 +289,7 @@ public class DataController {
 
             //Şu an tüm özellikler formdan gelmediği için dummy insert
             
-            dbAdapter.insertHouse(dbAdapter.getOwnerID(house.getOwnerMail()), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), "Sale", house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), "Available", house.getHouseType(), house.getOwnerMail());
+            dbAdapter.insertHouse(dbAdapter.getOwnerID(house.getOwnerMail()), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getCountry(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), "Sale", house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), "Available", house.getHouseType(), house.getOwnerMail());
             
             
             int lastHouseID = dbAdapter.getLatestHouseID();
