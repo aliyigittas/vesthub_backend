@@ -12,6 +12,10 @@ import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class DatabaseAdapter {
@@ -105,7 +109,42 @@ public class DatabaseAdapter {
     public String[] getPhotos (int houseID) 
     {
         List<String> images = jdbcTemplate.queryForList("SELECT pixels FROM images WHERE houseID = ?", String.class, houseID);
-        return images.toArray(new String[images.size()]);
+
+        List<String> real_images = new ArrayList<String>();
+
+        System.out.println(images.size());
+
+        // Initialize BufferedReader
+        BufferedReader reader = null;
+
+        for (String imagepath : images) {
+            try {
+                // Create FileReader and BufferedReader
+                FileReader fileReader = new FileReader("src/home-images/" + imagepath);
+                reader = new BufferedReader(fileReader);
+
+                // Read the file line by line
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    real_images.add(line);
+                }
+            } catch (IOException e) {
+                // Handle potential IOException
+                System.err.println("An IOException was caught: " + e.getMessage());
+            } finally {
+                // Close the BufferedReader
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                        System.err.println("An IOException was caught when closing the reader: " + e.getMessage());
+                    }
+                }
+            }
+        }
+        
+
+        return real_images.toArray(new String[real_images.size()]);
     }
 
     public List<House> getFeaturedHomes ()
@@ -127,7 +166,7 @@ public class DatabaseAdapter {
 
     public List<House> getMyFavorites (int id)
     {
-        return jdbcTemplate.query("SELECT * FROM houses WHERE id IN (SELECT houseID FROM favorites WHERE userID = ?)", (rs, rowNum) -> new House(rs.getInt("id"), rs.getInt("ownerID"), rs.getString("ownerMail") ,rs.getString("title"), rs.getString("description"), rs.getString("city"), rs.getString("distinct"), rs.getString("street"), rs.getString("fullAddress"), rs.getInt("price"), rs.getInt("numOfBathroom"), rs.getInt("numOfBedroom"), rs.getString("numOfRooms"), rs.getInt("area"), rs.getDouble("lat"), rs.getDouble("lng"), rs.getString("saleRent"), rs.getInt("approved"), rs.getInt("floor"), rs.getInt("totalFloor"), rs.getInt("fiberInternet"), rs.getInt("airConditioner"), rs.getInt("floorHeating"), rs.getInt("fireplace"), rs.getInt("terrace"), rs.getInt("satellite"), rs.getInt("parquet"), rs.getInt("steelDoor"), rs.getInt("furnished"), rs.getInt("insulation"), rs.getString("status"), rs.getString("houseType"), null, null), id);
+        return jdbcTemplate.query("SELECT * FROM houses WHERE id IN (SELECT houseID FROM favorites WHERE userID = ? AND status = 1)", (rs, rowNum) -> new House(rs.getInt("id"), rs.getInt("ownerID"), rs.getString("ownerMail") ,rs.getString("title"), rs.getString("description"), rs.getString("city"), rs.getString("distinct"), rs.getString("street"), rs.getString("fullAddress"), rs.getInt("price"), rs.getInt("numOfBathroom"), rs.getInt("numOfBedroom"), rs.getString("numOfRooms"), rs.getInt("area"), rs.getDouble("lat"), rs.getDouble("lng"), rs.getString("saleRent"), rs.getInt("approved"), rs.getInt("floor"), rs.getInt("totalFloor"), rs.getInt("fiberInternet"), rs.getInt("airConditioner"), rs.getInt("floorHeating"), rs.getInt("fireplace"), rs.getInt("terrace"), rs.getInt("satellite"), rs.getInt("parquet"), rs.getInt("steelDoor"), rs.getInt("furnished"), rs.getInt("insulation"), rs.getString("status"), rs.getString("houseType"), null, null), id);
     }
 
     public void addFavorite (int userID, int houseID)

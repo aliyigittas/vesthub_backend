@@ -18,6 +18,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -109,6 +113,10 @@ public class DataController {
     public String getMyHouses(@PathVariable String ownerMail) {
         int id = dbAdapter.getOwnerID(ownerMail);
         List<House> myHouses = dbAdapter.getMyHouses(id);
+        for (int i = 0; i < myHouses.size(); i++) {
+            String[] photos = dbAdapter.getPhotos(myHouses.get(i).getId());
+            myHouses.get(i).setImages(photos);
+        }
         ObjectMapper mapper = new ObjectMapper();
         try {
             String myHousesJson = mapper.writeValueAsString(myHouses);
@@ -123,6 +131,10 @@ public class DataController {
     public String getMyFavorites(@PathVariable String ownerMail) {
         int id = dbAdapter.getOwnerID(ownerMail);
         List<House> myFavoriteHouses = dbAdapter.getMyFavorites(id);
+        for (int i = 0; i < myFavoriteHouses.size(); i++) {
+            String[] photos = dbAdapter.getPhotos(myFavoriteHouses.get(i).getId());
+            myFavoriteHouses.get(i).setImages(photos);
+        }
         ObjectMapper mapper = new ObjectMapper();
         try {
             String myHousesJson = mapper.writeValueAsString(myFavoriteHouses);
@@ -227,13 +239,9 @@ public class DataController {
 
             JsonNode imagesNode = rootNode.get("images");
             List<String> images = mapper.convertValue(imagesNode, new TypeReference<List<String>>() {});
-            /* 
-            for (int i = 0; i < images.size(); i++) {
-                //delete the first part of the string
-                String[] parts = images.get(i).split(",");
-                images.set(i, parts[1]);
-            }
-            */
+            
+          
+            
 
             // Parse JSON string to House object
             House house = mapper.readValue(data, House.class);
@@ -271,13 +279,22 @@ public class DataController {
 
             //Şu an tüm özellikler formdan gelmediği için dummy insert
             
-            dbAdapter.insertHouse(dbAdapter.getOwnerID(house.getOwnerMail()), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getFullAddress(), house.getPrice(), 1, 1, "2+1", 75, house.getLat(), house.getLng(), "Sale", house.getApproved(), 2, 5, house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), "Available", "Apartment", house.getOwnerMail());
+            dbAdapter.insertHouse(dbAdapter.getOwnerID(house.getOwnerMail()), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), "Sale", house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), "Available", house.getHouseType(), house.getOwnerMail());
             
             
             int lastHouseID = dbAdapter.getLatestHouseID();
             System.out.println("Last house ID: " + lastHouseID);
             for (int i = 0; i < images.size(); i++) {
-                dbAdapter.insertImage(images.get(i), lastHouseID);
+                String fileName = lastHouseID+ "&" + i + ".txt";
+                
+                //save to a file 
+                // Using try-with-resources to ensure the file is closed properly
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/home-images/"+fileName))) {
+                    writer.write(images.get(i));
+                } catch (IOException e) {
+                    System.err.println("An IOException was caught: HATA image olmadı" + e.getMessage());
+                }
+                dbAdapter.insertImage(fileName, lastHouseID);
             }
 
             return true;
