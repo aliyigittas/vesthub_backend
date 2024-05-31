@@ -232,6 +232,16 @@ public class DatabaseAdapter {
         jdbcTemplate.update("INSERT INTO houses (ownerID, title, description, city, `distinct`, street, country, fullAddress, price, numOfBathroom, numOfBedroom, numOfRooms, area, lat, lng, saleRent, approved, floor, totalFloor, fiberInternet, airConditioner, floorHeating, fireplace, terrace, satellite, parquet, steelDoor, furnished, insulation, status, houseType, ownerMail, uploadDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())", ownerID, title, description, city, distinct, street, country, fullAddress, price, numOfBathroom, numOfBedroom, numOfRooms, area, lat, lng, saleRent, approved, floor, totalFloor, fiberInternet, airConditioner, floorHeating, fireplace, terrace, satellite, parquet, steelDoor, furnished, insulation, status, houseType, ownerMail);
     }
 
+    public void updateHouse(int houseID, int ownerID, String title, String description, String city, String distinct, String street, String country ,String fullAddress, int price, int numOfBathroom, int numOfBedroom, String numOfRooms, int area, double lat, double lng, String saleRent, int approved, int floor, int totalFloor, int fiberInternet, int airConditioner, int floorHeating, int fireplace, int terrace, int satellite, int parquet, int steelDoor, int furnished, int insulation, String status, String houseType, String ownerMail) 
+    {
+        jdbcTemplate.update("UPDATE houses SET ownerID = ?, title = ?, description = ?, city = ?, `distinct` = ?, street = ?, country = ?, fullAddress = ?, price = ?, numOfBathroom = ?, numOfBedroom = ?, numOfRooms = ?, area = ?, lat = ?, lng = ?, saleRent = ?, approved = ?, floor = ?, totalFloor = ?, fiberInternet = ?, airConditioner = ?, floorHeating = ?, fireplace = ?, terrace = ?, satellite = ?, parquet = ?, steelDoor = ?, furnished = ?, insulation = ?, status = ?, houseType = ?, ownerMail = ? WHERE id = ?", ownerID, title, description, city, distinct, street, country, fullAddress, price, numOfBathroom, numOfBedroom, numOfRooms, area, lat, lng, saleRent, approved, floor, totalFloor, fiberInternet, airConditioner, floorHeating, fireplace, terrace, satellite, parquet, steelDoor, furnished, insulation, status, houseType, ownerMail, houseID);
+    }
+
+    public void deleteImages(int houseID)
+    {
+        jdbcTemplate.update("DELETE FROM images WHERE houseID = ?", houseID);
+    }
+
     public void insertImage (String image, int houseID) 
     {
         jdbcTemplate.update("INSERT INTO images (houseID, pixels) VALUES (?, ?)", houseID, image);

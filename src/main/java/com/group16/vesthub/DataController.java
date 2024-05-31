@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -204,6 +206,28 @@ public class DataController {
         }
     }
 
+    @GetMapping("/api/sideFilter/{param}")
+    public String getSideFilter(@PathVariable String param) {
+        String[] params = param.split(" ");
+        String[] parsedResult = dbAdapter.parseMatch(params);
+        
+        //create a json object
+        HashMap<String, String> sideFilter = new HashMap<String, String>();
+        sideFilter.put("country", parsedResult[0]);
+        sideFilter.put("city", parsedResult[1]);
+        sideFilter.put("district", parsedResult[2]);
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String sideFilterJson = mapper.writeValueAsString(sideFilter);
+            return sideFilterJson;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     @GetMapping("/api/search/{param}")
     public String getSearchResults(@PathVariable String param) {
     
@@ -229,6 +253,102 @@ public class DataController {
             return null;
         }
     }
+
+    @PostMapping("/api/UpdateListing")
+    public boolean receiveDataFromUpdateHouse(@RequestBody String data) 
+    {
+        try 
+        {
+            // Initialize ObjectMapper
+            ObjectMapper mapper = new ObjectMapper();
+            
+            JsonNode rootNode = mapper.readTree(data);
+
+            // Extract keyFeatures array from the JsonNode
+            JsonNode keyFeaturesNode = rootNode.get("keyFeatures");
+            List<String> keyFeatures = mapper.convertValue(keyFeaturesNode, new TypeReference<List<String>>() {});
+
+            JsonNode imagesNode = rootNode.get("images");
+            List<String> images = mapper.convertValue(imagesNode, new TypeReference<List<String>>() {});
+            
+            // Parse JSON string to House object
+            House house = mapper.readValue(data, House.class);
+            house.setOwnerID(VesthubApplication.currentlyLoggedIn); //owner
+            System.out.println("ID: " + house.getId());
+            house.setApproved(0);
+            //parse the keyfeatures array
+            for (int i = 0; i < keyFeatures.size(); i++) {
+                String feature = keyFeatures.get(i);
+                if (feature.equals("Fiber Internet")) {
+                    house.setFiberInternet(1);
+                } else if (feature.equals("Air Conditioner")) {
+                    house.setAirConditioner(1);
+                } else if (feature.equals("Floor Heating")) {
+                    house.setFloorHeating(1);
+                } else if (feature.equals("Fireplace")) {
+                    house.setFireplace(1);
+                } else if (feature.equals("Terrace")) {
+                    house.setTerrace(1);
+                } else if (feature.equals("Satellite")) {
+                    house.setSatellite(1);
+                } else if (feature.equals("Parquet")) {
+                    house.setParquet(1);
+                } else if (feature.equals("Steel Door")) {
+                    house.setSteelDoor(1);
+                } else if (feature.equals("Furnished")) {
+                    house.setFurnished(1);
+                } else if (feature.equals("Insulation")) {
+                    house.setInsulation(1);
+                }
+            }
+
+            //insert database
+            dbAdapter.updateHouse(house.getId(), dbAdapter.getOwnerID(house.getOwnerMail()), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getCountry(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), house.getSaleRent(), house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), "Available", house.getHouseType(), house.getOwnerMail());
+            System.out.println("HOUSE ID: " + house.getId());
+            //update images
+            dbAdapter.deleteImages(house.getId());
+
+            //delete all images from the local folder
+            for (int i = 0; i < images.size(); i++) {
+                String fileName = house.getId() + "&" + i + ".txt";
+                try {
+                    //delete the file
+                    String filePath = "src/home-images/" + fileName;
+                    System.out.println("Deleting file: " + filePath);
+                    if (new java.io.File(filePath).delete()) {
+                        System.out.println("File deleted successfully");
+                    } else {
+                        System.out.println("Failed to delete the file");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
+                
+            }
+
+
+            for (int i = 0; i < images.size(); i++) {
+                String fileName = house.getId() + "&" + i + ".txt";
+                
+                //save to a file 
+                // Using try-with-resources to ensure the file is closed properly
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/home-images/"+fileName))) {
+                    writer.write(images.get(i));
+                } catch (IOException e) {
+                    System.err.println("An IOException was caught: HATA image olmadı" + e.getMessage());
+                }
+                dbAdapter.insertImage(fileName, house.getId());
+            }
+        } 
+        catch (Exception e) 
+        {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    
     
 
     @PostMapping("/api/CreateListing")
