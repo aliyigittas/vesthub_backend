@@ -112,7 +112,7 @@ public class DatabaseAdapter {
 
             if (response[0]==null)
             {
-                if(getCountryMatch(searchValues[i]) != null && response[1]!=searchValues[i] && response[2]!=searchValues[i])
+                if(getCountryMatch(searchValues[i]) != null && response[1]!=searchValues[i] && response[2]!=searchValues[i]) 
                 {
                     response[0] = getCountryMatch(searchValues[i]);
                 }
@@ -187,33 +187,39 @@ public class DatabaseAdapter {
         city = response[1];
         district = response[2];
 
-        
-        String query = "SELECT * FROM houses WHERE ";
-        if (country != null) //country varsa
-        {
-            query += "country = '" + country + "'";
-            if(city != null)
-                query += " AND city = '" + city + "'";
-            if(district != null)
-                query += " AND `distinct` = '" + district + "'";
+        String query = "";
+        if(country==null && city ==null && district==null){
+            query = "SELECT * FROM houses WHERE houseID=-1";
         }
-        else if(city != null)
-        {
-            query += " city = '" + city + "'";
-            if(district != null)
-                query += " AND `distinct` = '" + district + "'";
+        else{
+            query = "SELECT * FROM houses ";
+            if (country != null) //country varsa
+            {
+                query += "WHERE country = '" + country + "'";
+                if(city != null)
+                    query += " AND city = '" + city + "'";
+                if(district != null)
+                    query += " AND `distinct` = '" + district + "'";
+            }
+            else if(city != null)
+            {
+                query += "WHERE city = '" + city + "'";
+                if(district != null)
+                    query += " AND `distinct` = '" + district + "'";
+            }
+            else if(district != null)
+            {
+                query += "WHERE `distinct` = '" + district + "'";
+            }
+            /* 
+            else
+            {
+                query += " title LIKE '%" + searchValue + "%' OR description LIKE '%" + searchValue + "%' OR city LIKE '%" + searchValue + "%' OR `distinct` LIKE '%" + searchValue + "%' OR street LIKE '%" + searchValue + "%' OR country LIKE '%" + searchValue + "%' OR fullAddress LIKE '%" + searchValue + "%' OR price LIKE '%" + searchValue + "%' OR numOfBathroom LIKE '%" + searchValue + "%' OR numOfBedroom LIKE '%" + searchValue + "%' OR numOfRooms LIKE '%" + searchValue + "%' OR area LIKE '%" + searchValue + "%' OR saleRent LIKE '%" + searchValue + "%' OR approved LIKE '%" + searchValue + "%' OR floor LIKE '%" + searchValue + "%' OR totalFloor LIKE '%" + searchValue + "%' OR fiberInternet LIKE '%" + searchValue + "%' OR airConditioner LIKE '%" + searchValue + "%' OR floorHeating LIKE '%" + searchValue + "%' OR fireplace LIKE '%" + searchValue + "%' OR terrace LIKE '%" + searchValue + "%' OR satellite LIKE '%" + searchValue + "%' OR parquet LIKE '%" + searchValue + "%' OR steelDoor LIKE '%" + searchValue + "%' OR furnished LIKE '%" + searchValue + "%' OR insulation LIKE '%" + searchValue + "%' OR status LIKE '%" + searchValue + "%' OR houseType LIKE '%" + searchValue + "%'";
+            }*/
         }
-        else if(district != null)
-        {
-            query += " `distinct` = '" + district + "'";
-        }
-        /* 
-        else
-        {
-            query += " title LIKE '%" + searchValue + "%' OR description LIKE '%" + searchValue + "%' OR city LIKE '%" + searchValue + "%' OR `distinct` LIKE '%" + searchValue + "%' OR street LIKE '%" + searchValue + "%' OR country LIKE '%" + searchValue + "%' OR fullAddress LIKE '%" + searchValue + "%' OR price LIKE '%" + searchValue + "%' OR numOfBathroom LIKE '%" + searchValue + "%' OR numOfBedroom LIKE '%" + searchValue + "%' OR numOfRooms LIKE '%" + searchValue + "%' OR area LIKE '%" + searchValue + "%' OR saleRent LIKE '%" + searchValue + "%' OR approved LIKE '%" + searchValue + "%' OR floor LIKE '%" + searchValue + "%' OR totalFloor LIKE '%" + searchValue + "%' OR fiberInternet LIKE '%" + searchValue + "%' OR airConditioner LIKE '%" + searchValue + "%' OR floorHeating LIKE '%" + searchValue + "%' OR fireplace LIKE '%" + searchValue + "%' OR terrace LIKE '%" + searchValue + "%' OR satellite LIKE '%" + searchValue + "%' OR parquet LIKE '%" + searchValue + "%' OR steelDoor LIKE '%" + searchValue + "%' OR furnished LIKE '%" + searchValue + "%' OR insulation LIKE '%" + searchValue + "%' OR status LIKE '%" + searchValue + "%' OR houseType LIKE '%" + searchValue + "%'";
-        }*/
-
         System.out.println(query);
+
+        
 
         return jdbcTemplate.query(query, (rs, rowNum) -> new House(rs.getInt("id"), rs.getInt("ownerID"), rs.getString("ownerMail") ,rs.getString("title"), rs.getString("description"), rs.getString("city"), rs.getString("distinct"), rs.getString("street"), rs.getString("country"), rs.getString("fullAddress"), rs.getInt("price"), rs.getInt("numOfBathroom"), rs.getInt("numOfBedroom"), rs.getString("numOfRooms"), rs.getInt("area"), rs.getDouble("lat"), rs.getDouble("lng"), rs.getString("saleRent"), rs.getInt("approved"), rs.getInt("floor"), rs.getInt("totalFloor"), rs.getInt("fiberInternet"), rs.getInt("airConditioner"), rs.getInt("floorHeating"), rs.getInt("fireplace"), rs.getInt("terrace"), rs.getInt("satellite"), rs.getInt("parquet"), rs.getInt("steelDoor"), rs.getInt("furnished"), rs.getInt("insulation"), rs.getString("status"), rs.getString("houseType"), null, null));
 
