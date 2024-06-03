@@ -170,7 +170,16 @@ public class DatabaseAdapter {
         return null;
     }
 
+    public boolean insertReservation(int houseID, String ownerMail, String clientMail, String daytime, String date, String status, String message) 
+    {
+        jdbcTemplate.update("INSERT INTO reservations (houseID, ownerMail, clientMail, daytime, date, status, message) VALUES (?, ?, ?, ?, ?, ?, ?)", houseID, ownerMail, clientMail, daytime, date, "Waiting", message);
+        return true;
+    }
 
+    public List<Reservation> getReservations(String email)
+    {
+        return jdbcTemplate.query("SELECT * FROM reservations WHERE ownerMail = ? OR clientMail = ?", (rs, rowNum) -> new Reservation(rs.getInt("id"), rs.getInt("houseID"), rs.getString("ownerMail"), rs.getString("clientMail"), rs.getString("daytime"), rs.getString("date"), rs.getString("status"), rs.getString("message")), email, email);
+    }
 
     public List<House> getSearchResultsDB(String searchValue)
     {

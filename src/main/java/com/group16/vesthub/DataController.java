@@ -349,7 +349,45 @@ public class DataController {
         return true;
     }
     
+    @PostMapping("/api/addReservation")
+    public boolean addReservation(@RequestBody String entity) {
+        //add reservation to the class
+        try {
+            // Initialize ObjectMapper
+            ObjectMapper mapper = new ObjectMapper();
+            
+            // Parse JSON string to User object
+            Reservation reservation = mapper.readValue(entity, Reservation.class);
+            dbAdapter.insertReservation(reservation.getHouseID(), reservation.getOwnerMail(), reservation.getClientMail(), reservation.getDaytime(), reservation.getDate(), reservation.getStatus(), reservation.getMessage());
+            System.out.println("Reservation daytime: " + reservation.getDaytime());
+            System.out.println("Reservation date: " + reservation.getDate());
+            System.out.println("Reservation houseID: " + reservation.getHouseID());
+            System.out.println("Reservation houseOwnerID: " + reservation.getOwnerMail());
+            System.out.println("Reservation clientID: " + reservation.getClientMail());
+            System.out.println("Reservation status: " + reservation.getStatus());
+            System.out.println("Reservation message: " + reservation.getMessage());
+
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        
+        return true;
+    }
     
+    @GetMapping("/api/getReservations/{ownerMail}")
+    public String getReservations(@PathVariable String ownerMail) {
+        List<Reservation> reservations = dbAdapter.getReservations(ownerMail);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String reservationsJson = mapper.writeValueAsString(reservations);
+            return reservationsJson;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     @PostMapping("/api/CreateListing")
     public boolean receiveDataFromAddHouse(@RequestBody String data) 
