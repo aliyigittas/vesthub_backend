@@ -540,6 +540,39 @@ public class DataController {
             return null;
         }
     }
+
+    @GetMapping("/api/adminListings")
+    public String getAdminHouses() {
+        List<House> adminHouses = dbAdapter.getAdminHouses();
+        for (int i = 0; i < adminHouses.size(); i++) {
+            String[] photos = dbAdapter.getPhotos(adminHouses.get(i).getId());
+            adminHouses.get(i).setImages(photos);
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String adminHousesJson = mapper.writeValueAsString(adminHouses);
+            return adminHousesJson;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @PostMapping("/api/updateStatus")
+    public boolean updateStatus(@RequestBody String data) {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode rootNode;
+        try {
+            rootNode = mapper.readTree(data);
+            int houseID = rootNode.get("houseID").asInt();
+            String status = rootNode.get("status").asText();
+            dbAdapter.updateHouseStatus(houseID, status);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     
     
 }

@@ -377,4 +377,16 @@ public class DatabaseAdapter {
     {
         return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email = ?", (rs, rowNum) -> new User(rs.getString("name"), rs.getString("surname"), rs.getString("email"), rs.getString("password"), rs.getString("phone"), rs.getString("fullAddress"), rs.getString("city"), rs.getString("country"), rs.getBoolean("status"), rs.getString("profilePicture")), email);
     }
+
+
+    public List<House> getAdminHouses ()
+    {
+        return jdbcTemplate.query("SELECT * FROM houses WHERE status = 'Pending'", (rs, rowNum) -> new House(rs.getInt("id"), rs.getInt("ownerID"), rs.getString("ownerMail") ,rs.getString("title"), rs.getString("description"), rs.getString("city"), rs.getString("distinct"), rs.getString("street"), rs.getString("country"), rs.getString("fullAddress"), rs.getInt("price"), rs.getInt("numOfBathroom"), rs.getInt("numOfBedroom"), rs.getString("numOfRooms"), rs.getInt("area"), rs.getDouble("lat"), rs.getDouble("lng"), rs.getString("saleRent"), rs.getInt("approved"), rs.getInt("floor"), rs.getInt("totalFloor"), rs.getInt("fiberInternet"), rs.getInt("airConditioner"), rs.getInt("floorHeating"), rs.getInt("fireplace"), rs.getInt("terrace"), rs.getInt("satellite"), rs.getInt("parquet"), rs.getInt("steelDoor"), rs.getInt("furnished"), rs.getInt("insulation"), rs.getString("status"), rs.getString("houseType"), null, null)); 
+    }
+
+    public void updateHouseStatus (int houseID, String status)
+    {
+        jdbcTemplate.update("UPDATE houses SET status = ? WHERE id = ?", status, houseID);
+    }
+    
 }
