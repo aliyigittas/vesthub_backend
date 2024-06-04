@@ -344,4 +344,18 @@ public class DatabaseAdapter {
         int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM favorites WHERE userID = ? AND houseID = ? AND status = ?", Integer.class, userID, houseID, status);
         return count > 0;
     }
+
+    public boolean updateProfileInfoDB(int id, String name, String surname, String email, String phone)
+    {
+        int checkforEmail = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users WHERE email = ? AND userID != ?", Integer.class, email, id);
+        if(checkforEmail > 0)
+        {
+            return false;
+        }
+        else
+        {
+            jdbcTemplate.update("UPDATE users SET name = ?, surname = ?, email = ?, phone = ? WHERE userID = ?", name, surname, email, phone, id);
+        }
+        return true;
+    }
 }

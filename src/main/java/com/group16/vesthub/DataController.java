@@ -497,6 +497,27 @@ public class DataController {
         boolean isFavorite = dbAdapter.checkFavorite(ownerID, houseID, 1); 
         return isFavorite ? "true" : "false";
     }
+
+    @PostMapping("/api/updateProfileInfo")
+    public boolean updateProfileInfo(@RequestBody String entity) {
+        try {
+            // Initialize ObjectMapper
+            ObjectMapper mapper = new ObjectMapper();
+            
+            // Parse JSON string to 
+            String newEmail = mapper.readTree(entity).get("newEmail").asText();
+            String oldEmail = mapper.readTree(entity).get("oldEmail").asText();
+            String name = mapper.readTree(entity).get("name").asText();
+            String surname = mapper.readTree(entity).get("surname").asText();
+            String phone = mapper.readTree(entity).get("phone").asText();
+            int ownerID = dbAdapter.getOwnerID(oldEmail);
+            return dbAdapter.updateProfileInfoDB(ownerID, name, surname, newEmail, phone);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
     
 }
 
