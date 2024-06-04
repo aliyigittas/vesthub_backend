@@ -25,11 +25,16 @@ DROP TABLE IF EXISTS `reservations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reservations` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `houseID` int NOT NULL,
-  `customerID` int NOT NULL,
-  `reservationDateTime` datetime NOT NULL,
-  PRIMARY KEY (`houseID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `clientMail` varchar(100) NOT NULL,
+  `ownerMail` varchar(100) NOT NULL,
+  `message` varchar(1000) DEFAULT NULL,
+  `daytime` varchar(45) NOT NULL,
+  `date` varchar(100) NOT NULL,
+  `status` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,6 +43,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
+INSERT INTO `reservations` VALUES (1,3,'safak@f.com','safak@f.com','Hocam önemli','Evening','2024-06-13 06:45','Waiting');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-30 12:40:33
+-- Dump completed on 2024-06-04 10:34:47

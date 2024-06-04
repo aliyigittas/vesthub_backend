@@ -32,6 +32,7 @@ CREATE TABLE `houses` (
   `city` varchar(45) NOT NULL,
   `distinct` varchar(100) NOT NULL,
   `street` varchar(100) NOT NULL,
+  `country` varchar(45) NOT NULL,
   `fullAddress` varchar(1000) NOT NULL,
   `price` int NOT NULL,
   `numOfBathroom` int NOT NULL,
@@ -60,7 +61,7 @@ CREATE TABLE `houses` (
   `uploadDate` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +70,7 @@ CREATE TABLE `houses` (
 
 LOCK TABLES `houses` WRITE;
 /*!40000 ALTER TABLE `houses` DISABLE KEYS */;
-INSERT INTO `houses` VALUES (1,7,'BEYLİKDÜZÜ SAFA DAN ADNAN KAHVECİDE HAVUZLU DENİZ MANZARALI 3+1','SAFA GAYRİMENKUL\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nBEYLİKDÜZÜ ADNAN KAHVECİ MAHALLESİNDE ','Beylikdüzü','Beylikdüzü Organize Sanayi Bölgesi','Adnan Kahveci','Adnan Kahveci, Kafkas Cd. No:10, 34528 Beylikdüzü Organize Sanayi Bölgesi/Beylikdüzü/İstanbul, Türkiye',5249000,1,1,'2+1',75,40.99888032791223,28.621226471533216,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment','testtest@trest.com','2024-05-29 18:05:51'),(2,7,'FAİZLERE İNAT İLK EVİM KAMPANYASI! %40 PEŞİNATLA EV SAHİBİ OLUN','RESİMLER DAİRENİN BİRE BİR KENDİNE AİT OLUP FİRMA OLARAK GERÇEK DAİRE GERÇEK  İLAN !!\n\nLION YAPI & MİMARLIK \'DAN BÖLGENİN EMSALSİZ 2+1 SIFIR DAİRELERİ PROJEDE ARAKAT SEÇENEKLERİ BULUNMAKTADIR.\n\nİLK EVİNİ ALACAKLARA EXPER DEĞERİNİN %80\'E KADAR KREDİ İMKANI İLE FAYDALANABİLİRSİNİZ.\n\nYENİ YAPILACAK METRO PROJESİNE YAKIN\n\nDOĞAN ARASLI BULVARINA 10 DK MESAFEDE\n\nÇİFT KATLI 76D İETT HATTI - OTOBÜS VE MİNUBÜS HATLARI\n\nMETROBÜSE ULAŞIM TOPLU TAŞIMALAR İLE 5 DK MESAFEDE\n\nODA SAYISI: 2+1\n\n120M2 BRÜT\n\nKREDİYE UYGUN\n\n1 YIL İÇİN’DE %40 PRİM GARANTİSİ\n \nLION YAPI MİMARLIK KALİTESİ İLE SİZDE EV SAHİBİ OLUN','İstanbul','Esenyurt','Balıkyolu','Balıkyolu, 482. Sk. No:21, 34510 Esenyurt/İstanbul, Türkiye',1680000,1,1,'2+1',75,41.03928961898912,28.69126431333009,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment','testtest@trest.com','2024-05-29 18:05:51'),(3,7,'Oyuncak müzesi','descriptionnnnnnn','İstanbul','Fatih','Yavuz Sultan Selim','Yavuz Sultan Selim, Abdülezelpaşa Cd. No:67, 34083 Fatih/İstanbul, Türkiye',1234578,1,1,'2+1',75,41.02772851470656,28.95654729786987,'Sale',0,2,5,1,1,0,1,0,0,1,1,0,1,'Available','Apartment','testtest@trest.com','2024-05-29 18:10:41');
+INSERT INTO `houses` VALUES (1,1,'ev 1','ev 1 acıklama','İstanbul','Fatih','Cibali','Türkiye','Cibali, Kadir Has Cd. No:1, 34083 Fatih/İstanbul, Türkiye',660,1,1,'2+1',75,41.0251673,28.9588656,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment','safak@f.com','2024-05-30 16:26:41'),(2,1,'ev 2','ev 2 acıklama','İstanbul','Fatih','Cibali','Türkiye','Cibali, Kadir Has Cd. No:1, 34083 Fatih/İstanbul, Türkiye',659997,1,1,'2+1',75,41.0251673,28.9588656,'Rent',0,2,5,1,1,1,0,1,1,0,1,1,1,'Available','Apartment','safak@f.com','2024-05-30 16:27:10'),(3,1,'EVVVV','EVVVVVVVVVVVVVVVVV','İstanbul','Gaziosmanpaşa','255. Sokak','Türkiye','Hürriyet, 255. Sk. No:10, 34250 Gaziosmanpaşa/İstanbul, Türkiye',12345,2,2,'3+1',22,41.0659081,28.9002822,'Rent',0,2,2,0,1,1,1,1,1,1,0,0,0,'Available','Apartment','safak@f.com','2024-05-31 02:38:25'),(4,1,'EV9999','sasasasaassasa','İstanbul','Gaziosmanpaşa','255. Sokak','Türkiye','Hürriyet, 255. Sk. No:10, 34250 Gaziosmanpaşa/İstanbul, Türkiye',2,111,11,'3+1',1,41.0659081,28.9002822,'Sale',0,2,3,0,0,0,0,0,0,0,0,0,0,'Available','Apartment','safak@f.com','2024-05-31 02:47:28'),(5,1,'Antalya Ev updated','lara ev','Antalya','Muratpaşa','Metin Kasapoğlu Caddesi','Türkiye','Yeşilbahçe, Metin Kasapoğlu Cd. No:46, 07160 Muratpaşa/Antalya, Türkiye',30000,2,2,'2+1',70,36.868124413471634,30.723379555078118,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment','safak@f.com','2024-05-31 18:34:06');
 /*!40000 ALTER TABLE `houses` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -82,4 +83,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-30 12:40:33
+-- Dump completed on 2024-06-04 10:34:47
