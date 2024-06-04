@@ -255,10 +255,32 @@ public class DataController {
         String searchValue = params[0];
         String saleRent = params[1];
         String saleRentParsed = (saleRent.split("="))[1];
-        System.out.println("Sale or rent?"+saleRent);
         String houseType = params[2];
+        String houseTypeParsed = (houseType.split("="))[1];
+        String roomCount = params[3];
+        String roomCountParsed = (roomCount.split("="))[1];
+        String minPrice = params[4];
+        int minPriceParsed = Integer.parseInt((minPrice.split("="))[1]);
+        String maxPrice = params[5];
+        int maxPriceParsed = Integer.parseInt((maxPrice.split("="))[1]);
+        String minArea = params[6];
+        int minAreaParsed = Integer.parseInt((minArea.split("="))[1]);
+        String maxArea = params[7];
+        int maxAreaParsed = Integer.parseInt((maxArea.split("="))[1]);
+        String listingDate = params[8];
+        String listingDateParsed = (listingDate.split("="))[1];
 
-        List<House> searchResults = dbAdapter.getSearchResultsDB(searchValue, saleRentParsed);
+        if(!listingDateParsed.equals("All")){
+            listingDateParsed = String.valueOf(listingDateParsed.charAt(4));
+        }
+        if(maxPriceParsed<minPriceParsed){
+            //show alert
+        }
+        if(maxAreaParsed<minAreaParsed){
+            //show alert
+        }
+
+        List<House> searchResults = dbAdapter.getSearchResultsDB(searchValue, saleRentParsed, houseTypeParsed, roomCountParsed, minPriceParsed, maxPriceParsed, minAreaParsed, maxAreaParsed, listingDateParsed);
 
         //get house photos from databse
         for (int i = 0; i < searchResults.size(); i++) {

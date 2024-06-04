@@ -168,8 +168,6 @@ public class DatabaseAdapter {
                     response[2] = getDistrictMatch(searchValues[i]);
                 }
             }
-
-
         }
 
         return response;
@@ -262,8 +260,7 @@ public class DatabaseAdapter {
         
     }
 
-    public List<House> getSearchResultsDB(String searchValue, String saleRent)
-    {
+    public String searchTextForQuery (String searchValue){
         //parse the search value with spaces
         String[] searchValues = searchValue.split(" ");
         System.out.println("Array:"+ searchValues[0]);
@@ -285,21 +282,21 @@ public class DatabaseAdapter {
             query = "SELECT * FROM houses ";
             if (country != null) //country varsa
             {
-                query += "WHERE country = '" + country + "'";
+                query += "WHERE country = '" + country + "' ";
                 if(city != null)
-                    query += " AND city = '" + city + "'";
+                    query += " AND city = '" + city + "' ";
                 if(district != null)
-                    query += " AND `distinct` = '" + district + "'";
+                    query += " AND `distinct` = '" + district + "' ";
             }
             else if(city != null)
             {
-                query += "WHERE city = '" + city + "'";
+                query += "WHERE city = '" + city + "' ";
                 if(district != null)
-                    query += " AND `distinct` = '" + district + "'";
+                    query += " AND `distinct` = '" + district + "' ";
             }
             else if(district != null)
             {
-                query += "WHERE `distinct` = '" + district + "'";
+                query += "WHERE `distinct` = '" + district + "' ";
             }
             /* 
             else
@@ -307,17 +304,99 @@ public class DatabaseAdapter {
                 query += " title LIKE '%" + searchValue + "%' OR description LIKE '%" + searchValue + "%' OR city LIKE '%" + searchValue + "%' OR `distinct` LIKE '%" + searchValue + "%' OR street LIKE '%" + searchValue + "%' OR country LIKE '%" + searchValue + "%' OR fullAddress LIKE '%" + searchValue + "%' OR price LIKE '%" + searchValue + "%' OR numOfBathroom LIKE '%" + searchValue + "%' OR numOfBedroom LIKE '%" + searchValue + "%' OR numOfRooms LIKE '%" + searchValue + "%' OR area LIKE '%" + searchValue + "%' OR saleRent LIKE '%" + searchValue + "%' OR approved LIKE '%" + searchValue + "%' OR floor LIKE '%" + searchValue + "%' OR totalFloor LIKE '%" + searchValue + "%' OR fiberInternet LIKE '%" + searchValue + "%' OR airConditioner LIKE '%" + searchValue + "%' OR floorHeating LIKE '%" + searchValue + "%' OR fireplace LIKE '%" + searchValue + "%' OR terrace LIKE '%" + searchValue + "%' OR satellite LIKE '%" + searchValue + "%' OR parquet LIKE '%" + searchValue + "%' OR steelDoor LIKE '%" + searchValue + "%' OR furnished LIKE '%" + searchValue + "%' OR insulation LIKE '%" + searchValue + "%' OR status LIKE '%" + searchValue + "%' OR houseType LIKE '%" + searchValue + "%'";
             }*/
         }
-        System.out.println(query);
+        return query;
+    }
+
+    public String saleRentForQuery(String saleRent){
+        String query = "";
         if(saleRent.equals("sale")){
-            query += "AND saleRent = '" + "Sale'";
+            query += "AND saleRent = " + "'Sale' ";
         }
         else{
-            query += "AND saleRent = 'Rent'";
+            query += "AND saleRent = 'Rent' ";
         }
-        
+        return query;
+    }
+
+    public String houseTypeForQuery(String houseType){
+        String query = "";
+        if(houseType.equals("Apartment")){
+            query+="AND houseType = 'Apartment' ";
+        }
+        else if(houseType.equals("Villa")){
+            query+="AND houseType = 'Villa' ";
+        }
+        else if(houseType.equals("Studio")){
+            query+="AND houseType = 'Studio' ";
+        }
+        return query;
+    }
+
+    public String roomCountForQuery(String roomCount){
+        String query = "";
+        if(roomCount.equals("1+1")){
+            query+="AND numOfRooms = '1+1' ";
+        }
+        else if(roomCount.equals("2+1")){
+            query+="AND numOfRooms = '2+1' ";
+        }
+        else if(roomCount.equals("3+1")){
+            query+="AND numOfRooms = '3+1' ";
+        }
+        else if(roomCount.equals("4+1")){
+            query+="AND numOfRooms = '4+1' ";
+        }
+        else if(roomCount.equals("5+1")){
+            query+="AND numOfRooms = '5+1' ";
+        }
+        return query;
+    }
+
+    public String priceForQuery(int minPrice, int maxPrice){
+        String query = "";
+        if(minPrice!=-1){
+            query += "AND price>="+minPrice+" ";
+        }
+        if(maxPrice!=-1){
+            query += "AND price<="+maxPrice+" ";
+        }
+        return query;
+    }
+
+    public String areaForQuery(int minArea, int maxArea){
+        String query = "";
+        if(minArea!=-1){
+            query += "AND area>="+minArea+" ";
+        }
+        if(maxArea!=-1){
+            query += "AND area<="+maxArea+" ";
+        }
+        return query;
+    }
+
+    public String listingDateForQuery(String listingDate){
+        String query = "";
+        int hours = 0;
+        if(!listingDate.equals("All")){
+            hours = (Integer.parseInt(listingDate))*24;
+            query += "AND timestampdiff(hour, uploadDate, NOW()) <="+hours+" ";
+        }
+        return query;
+    }
+
+    public List<House> getSearchResultsDB(String searchValue, String saleRent, String houseType, String roomCount, int minPrice, int maxPrice, int minArea, int maxArea, String listingDate)
+    {
+        String query = "";
+        query += searchTextForQuery(searchValue);
+        query += saleRentForQuery(saleRent);
+        query += houseTypeForQuery(houseType);
+        query += roomCountForQuery(roomCount);
+        query += priceForQuery(minPrice, maxPrice);
+        query += listingDateForQuery(listingDate);
+
+        System.out.println(query);
 
         return jdbcTemplate.query(query, (rs, rowNum) -> new House(rs.getInt("id"), rs.getInt("ownerID"), rs.getString("ownerMail") ,rs.getString("title"), rs.getString("description"), rs.getString("city"), rs.getString("distinct"), rs.getString("street"), rs.getString("country"), rs.getString("fullAddress"), rs.getInt("price"), rs.getInt("numOfBathroom"), rs.getInt("numOfBedroom"), rs.getString("numOfRooms"), rs.getInt("area"), rs.getDouble("lat"), rs.getDouble("lng"), rs.getString("saleRent"), rs.getInt("approved"), rs.getInt("floor"), rs.getInt("totalFloor"), rs.getInt("fiberInternet"), rs.getInt("airConditioner"), rs.getInt("floorHeating"), rs.getInt("fireplace"), rs.getInt("terrace"), rs.getInt("satellite"), rs.getInt("parquet"), rs.getInt("steelDoor"), rs.getInt("furnished"), rs.getInt("insulation"), rs.getString("status"), rs.getString("houseType"), null, null));
-
     }
 
     public void insertHouse(int ownerID, String title, String description, String city, String distinct, String street, String country ,String fullAddress, int price, int numOfBathroom, int numOfBedroom, String numOfRooms, int area, double lat, double lng, String saleRent, int approved, int floor, int totalFloor, int fiberInternet, int airConditioner, int floorHeating, int fireplace, int terrace, int satellite, int parquet, int steelDoor, int furnished, int insulation, String status, String houseType, String ownerMail) 
