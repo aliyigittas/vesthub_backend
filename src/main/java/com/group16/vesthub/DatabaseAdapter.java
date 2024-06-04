@@ -178,7 +178,8 @@ public class DatabaseAdapter {
 
     public List<Reservation> getReservations(String email)
     {
-        return jdbcTemplate.query("SELECT * FROM reservations WHERE ownerMail = ? OR clientMail = ?", (rs, rowNum) -> new Reservation(rs.getInt("id"), rs.getInt("houseID"), rs.getString("ownerMail"), rs.getString("clientMail"), rs.getString("daytime"), rs.getString("date"), rs.getString("status"), rs.getString("message")), email, email);
+        //inner join with users table
+        return jdbcTemplate.query("SELECT * FROM reservations INNER JOIN users ON reservations.ownerMail = users.email WHERE clientMail = ? OR ownerMail = ?", (rs, rowNum) -> new Reservation(rs.getInt("id"), rs.getInt("houseID"), rs.getString("name"), rs.getString("profilePicture") , rs.getString("ownerMail"), rs.getString("clientMail"), rs.getString("daytime"), rs.getString("date"), rs.getString("status"), rs.getString("message")), email, email); 
     }
 
     public List<House> getSearchResultsDB(String searchValue, String saleRent)
@@ -238,8 +239,6 @@ public class DatabaseAdapter {
         return jdbcTemplate.query(query, (rs, rowNum) -> new House(rs.getInt("id"), rs.getInt("ownerID"), rs.getString("ownerMail") ,rs.getString("title"), rs.getString("description"), rs.getString("city"), rs.getString("distinct"), rs.getString("street"), rs.getString("country"), rs.getString("fullAddress"), rs.getInt("price"), rs.getInt("numOfBathroom"), rs.getInt("numOfBedroom"), rs.getString("numOfRooms"), rs.getInt("area"), rs.getDouble("lat"), rs.getDouble("lng"), rs.getString("saleRent"), rs.getInt("approved"), rs.getInt("floor"), rs.getInt("totalFloor"), rs.getInt("fiberInternet"), rs.getInt("airConditioner"), rs.getInt("floorHeating"), rs.getInt("fireplace"), rs.getInt("terrace"), rs.getInt("satellite"), rs.getInt("parquet"), rs.getInt("steelDoor"), rs.getInt("furnished"), rs.getInt("insulation"), rs.getString("status"), rs.getString("houseType"), null, null));
 
     }
-
-
 
     public void insertHouse(int ownerID, String title, String description, String city, String distinct, String street, String country ,String fullAddress, int price, int numOfBathroom, int numOfBedroom, String numOfRooms, int area, double lat, double lng, String saleRent, int approved, int floor, int totalFloor, int fiberInternet, int airConditioner, int floorHeating, int fireplace, int terrace, int satellite, int parquet, int steelDoor, int furnished, int insulation, String status, String houseType, String ownerMail) 
     {
@@ -357,5 +356,25 @@ public class DatabaseAdapter {
             jdbcTemplate.update("UPDATE users SET name = ?, surname = ?, email = ?, phone = ? WHERE userID = ?", name, surname, email, phone, id);
         }
         return true;
+    }
+
+    public boolean changePasswordDB(int ownerID, String oldPassword, String newPassword)
+    {
+        int checkforPassword = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users WHERE userID = ? AND password = ?", Integer.class, ownerID, oldPassword);
+        if(checkforPassword > 0)
+        {
+            jdbcTemplate.update("UPDATE users SET password = ? WHERE userID = ?", newPassword, ownerID);
+            return true;
+        }
+        else
+        {
+            System.out.println("Old password is wrong!!!!!!!!!!!!!!!!");
+            return false;
+        }
+    }
+
+    public User getUserFromMail(String email)
+    {
+        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email = ?", (rs, rowNum) -> new User(rs.getString("name"), rs.getString("surname"), rs.getString("email"), rs.getString("password"), rs.getString("phone"), rs.getString("fullAddress"), rs.getString("city"), rs.getString("country"), rs.getBoolean("status"), rs.getString("profilePicture")), email);
     }
 }

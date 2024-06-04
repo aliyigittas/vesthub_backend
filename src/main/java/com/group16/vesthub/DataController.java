@@ -185,8 +185,6 @@ public class DataController {
         }
     }
 
-    //check favorite
-
     @GetMapping("api/featuredHomes")
     public String getFeaturedHomes() {
         List<House> featuredHomes = dbAdapter.getFeaturedHomes();
@@ -226,7 +224,6 @@ public class DataController {
             return null;
         }
     }
-
 
     @GetMapping("/api/search/{param}")
     public String getSearchResults(@PathVariable String param) {
@@ -439,16 +436,8 @@ public class DataController {
                 } else if (feature.equals("Insulation")) {
                     house.setInsulation(1);
                 }
-            }
-
-            
-            //insert database
-            //dbAdapter.insertHouse(house.getOwnerID(), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), house.getSaleRent(), house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), house.getStatus(), house.getHouseType());
-
-            //Şu an tüm özellikler formdan gelmediği için dummy insert
-            
-            dbAdapter.insertHouse(dbAdapter.getOwnerID(house.getOwnerMail()), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getCountry(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), house.getSaleRent(), house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), "Available", house.getHouseType(), house.getOwnerMail());
-            
+            }            
+            dbAdapter.insertHouse(dbAdapter.getOwnerID(house.getOwnerMail()), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getCountry(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), house.getSaleRent(), house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), "Pending", house.getHouseType(), house.getOwnerMail());
             
             int lastHouseID = dbAdapter.getLatestHouseID();
             System.out.println("Last house ID: " + lastHouseID);
@@ -515,6 +504,40 @@ public class DataController {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    @PostMapping("/api/changePassword")
+    public boolean changePassword(@RequestBody String entity) {
+        try {
+            // Initialize ObjectMapper
+            ObjectMapper mapper = new ObjectMapper();
+            
+            // Parse JSON string to 
+            String email = mapper.readTree(entity).get("email").asText();
+            String oldPassword = mapper.readTree(entity).get("currentPassword").asText();
+            String newPassword = mapper.readTree(entity).get("newPassword").asText();
+            System.out.println("Email: " + email);
+            System.out.println("Old Password: " + oldPassword);
+            System.out.println("New Password: " + newPassword);
+            int ownerID = dbAdapter.getOwnerID(email);
+            return dbAdapter.changePasswordDB(ownerID, oldPassword, newPassword);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    @GetMapping("/api/getUser/{email}")
+    public String getUser(@PathVariable String email) {
+        User user = dbAdapter.getUserFromMail(email);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            String userJson = mapper.writeValueAsString(user);
+            return userJson;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
     

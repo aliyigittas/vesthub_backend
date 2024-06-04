@@ -3,6 +3,8 @@ package com.group16.vesthub;
 public class Reservation {
     private int id;
     private int houseID;
+    private String ownerName;
+    private String profilePicture;
     private String ownerMail;
     private String clientMail;
     private String daytime;
@@ -13,9 +15,11 @@ public class Reservation {
     Reservation() {
     }
 
-    Reservation(int id, int houseID, String ownerMail, String clientMail, String daytime, String date, String status, String message) {
+    Reservation(int id, int houseID, String ownerName, String profilePicture, String ownerMail, String clientMail, String daytime, String date, String status, String message) {
         this.id = id;
         this.houseID = houseID;
+        this.ownerName = ownerName;
+        this.profilePicture = profilePicture;
         this.ownerMail = ownerMail;
         this.clientMail = clientMail;
         this.daytime = daytime;
@@ -38,6 +42,22 @@ public class Reservation {
 
     public void setHouseID(int houseID) {
         this.houseID = houseID;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
     public String getOwnerMail() {

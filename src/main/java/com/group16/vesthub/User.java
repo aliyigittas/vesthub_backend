@@ -18,7 +18,7 @@ public class User
 
     }
 
-    public User(String name, String surname, String email, String password, String phone, String fullAddress, String city, String country, boolean status) 
+    public User(String name, String surname, String email, String password, String phone, String fullAddress, String city, String country, boolean status, String profilePicture) 
     {
         this.name = name;
         this.surname = surname;
