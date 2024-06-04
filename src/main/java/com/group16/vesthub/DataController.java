@@ -23,6 +23,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+
 
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -53,6 +56,8 @@ public class DataController {
                 // Get user from database
                 User userFromDB = dbAdapter.signIn(user.getEmail(), user.getPassword());
                 
+                
+
                 // Check if user exists
                 if (userFromDB != null) 
                 {
@@ -85,8 +90,14 @@ public class DataController {
             
             // Parse JSON string to User object
             User user = mapper.readValue(data, User.class);
-
+            //print only profilePicture from frontend using mapper
+            //System.out.println("User Photo: " + mapper.readTree(data).get("profilePicture").asText());
+            //System.out.println("User Photo: " + user.getProfilePicture());
             // Print received data
+
+            
+
+
             System.out.println("Received data from frontend: " + data);
             if (dbAdapter.checkUserExists(user.getEmail())) 
             {
@@ -94,7 +105,18 @@ public class DataController {
             }
             //insert database
             dbAdapter.insertUser(user.getName(), user.getSurname(), user.getEmail(), user.getPhone(), user.getPassword(), user.getFullAddress(), user.getCity(), user.getCountry(), 1);
-            
+            int lastUserID = dbAdapter.getLatestUserID();
+            String fileName = lastUserID +".txt";
+                
+            //save to a file 
+            // Using try-with-resources to ensure the file is closed properly
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/profile-images/"+fileName))) {
+                writer.write(user.getProfilePicture());
+            } catch (IOException e) {
+                System.err.println("An IOException was caught: HATA image olmadı" + e.getMessage());
+            }
+            dbAdapter.insertProfileImage(fileName, lastUserID);
+
             return true;
         } 
         catch (Exception e) 
@@ -478,6 +500,26 @@ public class DataController {
             return null;
         }
     }
+
+    @PostMapping("/api/updateReservationStatus")
+    public boolean updateMeetingStatus(@RequestBody String entity) {
+        try {
+            // Initialize ObjectMapper
+            ObjectMapper mapper = new ObjectMapper();
+            
+            // Parse JSON string to 
+            int reservationID = mapper.readTree(entity).get("reservationID").asInt();
+            String status = mapper.readTree(entity).get("meetingStatus").asText();
+            dbAdapter.updateReservationStatusDB(reservationID, status);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        
+        
+    }
+    
 
     @GetMapping("/api/checkFavorite")
     public String checkFavorite(@RequestParam int houseID, @RequestParam String ownerMail) {

@@ -11,12 +11,16 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
 
+import org.apache.tomcat.jni.Buffer;
 import org.springframework.core.annotation.MergedAnnotations.Search;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -50,6 +54,16 @@ public class DatabaseAdapter {
         jdbcTemplate.update("INSERT INTO users (name, surname, email, phone, password, fullAddress, city, country, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", name, surname, email, phone, password, fullAddress, city, country, status);
     }
 
+    public int getLatestUserID() 
+    {
+        return jdbcTemplate.queryForObject("SELECT MAX(userID) FROM users", Integer.class);
+    }
+
+    public void insertProfileImage(String image, int userID) 
+    {
+        jdbcTemplate.update("UPDATE users SET profilePicture = ? WHERE userID = ?", image, userID);
+    }
+
     public boolean checkUserExists(String email) 
     {
         int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users WHERE email = ?", Integer.class, email);
@@ -70,7 +84,28 @@ public class DatabaseAdapter {
             user.setCity((String) map.get("city"));
             user.setCountry((String) map.get("country"));
             user.setStatus((int) map.get("status"));
-            user.setProfilePicture((String) map.get("profilePicture"));
+            String profilePicturePath = (String) map.get("profilePicture");
+            BufferedReader reader = null;
+            try {
+                // Create FileReader and BufferedReader
+                FileReader fileReader = new FileReader("src/profile-images/" + profilePicturePath);
+                reader = new BufferedReader(fileReader);
+                // Read the file line by line
+                user.setProfilePicture(reader.readLine());
+                System.out.println("Profile picture: " + user.getProfilePicture());
+            } catch (IOException e) {
+                // Handle potential IOException
+                System.err.println("An IOException was caught: " + e.getMessage());
+            } finally {
+                // Close the BufferedReader
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException e) {
+                        System.err.println("An IOException was caught when closing the reader: " + e.getMessage());
+                    }
+                }
+            }
         }
 
         //if there is no such user
@@ -178,16 +213,53 @@ public class DatabaseAdapter {
 
     public List<Reservation> getReservations(String email)
     {
-        //check for reservation date and if it is passed, change the status to if it is not accepted yet to "Passed" or "Accepted"
-        jdbcTemplate.update("UPDATE reservations SET status = 'Passed' WHERE date < NOW() AND status = 'Waiting'");
-        jdbcTemplate.update("UPDATE reservations SET status = 'Completed' WHERE date < NOW() AND status = 'Accepted' AND (ownerMail = ? OR clientMail = ?)", email, email);
+        updateReservationStatus("Passed", "Waiting");
+        updateReservationStatus("Completed", "Accepted");
         //inner join with users table
         return jdbcTemplate.query("SELECT * FROM reservations INNER JOIN users ON reservations.ownerMail = users.email WHERE clientMail = ? OR ownerMail = ?", (rs, rowNum) -> new Reservation(rs.getInt("id"), rs.getInt("houseID"), rs.getString("name"), rs.getString("profilePicture") , rs.getString("ownerMail"), rs.getString("clientMail"), rs.getString("daytime"), rs.getString("date"), rs.getString("status"), rs.getString("message")), email, email); 
     }
 
-    public void updateReservationStatus(int id, String status)
+    public void updateReservationStatusDB(int id, String status)
     {
-        jdbcTemplate.update("UPDATE reservations SET status = ? WHERE date < NOW()", status);
+        jdbcTemplate.update("UPDATE reservations SET status = ? WHERE id = ?", status, id);
+    }
+
+    public void updateReservationStatus(String status, String currentStatus)
+    {
+        String query = "UPDATE reservations SET status = ? WHERE status = ? AND (DATE(date) ";
+        try {
+            // Append time constraints to the query
+            LocalTime morningMax = LocalTime.parse("11:00");
+            LocalTime afternoonMax = LocalTime.parse("14:00");
+            LocalTime eveningMax = LocalTime.parse("17:00");
+            LocalTime currentTime = LocalTime.now();
+
+            if (currentTime.isAfter(morningMax)) { //sabah saatini geçtiyse
+                query += "<CURRENT_DATE() OR (DATE(date) = CURRENT_DATE() AND (daytime = 'Morning' ";
+                if(currentTime.isAfter(afternoonMax)){ //öğleni de geçtiyse
+                    query += "OR daytime = 'Afternoon' ";
+                    if(currentTime.isAfter(eveningMax)){ //akşamı da geçtiyse
+                        query += "OR daytime = 'Evening')))";
+                    }
+                    else{
+                        query+=")))";
+                    }
+                }
+                else{
+                    query+=")))";
+                }
+            } 
+            else{
+                query+="<CURRENT_DATE())";
+            }
+
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid time format: " + e.getMessage());
+        }
+
+        //System.out.println(query);
+        jdbcTemplate.update(query, status, currentStatus);
+        
     }
 
     public List<House> getSearchResultsDB(String searchValue, String saleRent)
@@ -267,7 +339,7 @@ public class DatabaseAdapter {
     {
         jdbcTemplate.update("INSERT INTO images (houseID, pixels) VALUES (?, ?)", houseID, image);
     }
-
+    
     public String[] getPhotos (int houseID) 
     {
         List<String> images = jdbcTemplate.queryForList("SELECT pixels FROM images WHERE houseID = ?", String.class, houseID);
@@ -385,7 +457,6 @@ public class DatabaseAdapter {
     {
         return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email = ?", (rs, rowNum) -> new User(rs.getString("name"), rs.getString("surname"), rs.getString("email"), rs.getString("password"), rs.getString("phone"), rs.getString("fullAddress"), rs.getString("city"), rs.getString("country"), rs.getBoolean("status"), rs.getString("profilePicture")), email);
     }
-
 
     public List<House> getAdminHouses ()
     {

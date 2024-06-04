@@ -29,7 +29,7 @@ public class User
         this.city = "city";
         this.country = "country";
         this.status = 1;
-        this.profilePicture = "profilePicture";
+        this.profilePicture = profilePicture;
     }
 
     public String getName() 
