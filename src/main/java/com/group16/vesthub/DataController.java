@@ -235,9 +235,11 @@ public class DataController {
         String[] params = param.split("&");
         String searchValue = params[0];
         String saleRent = params[1];
+        String saleRentParsed = (saleRent.split("="))[1];
+        System.out.println("Sale or rent?"+saleRent);
         String houseType = params[2];
 
-        List<House> searchResults = dbAdapter.getSearchResultsDB(searchValue);
+        List<House> searchResults = dbAdapter.getSearchResultsDB(searchValue, saleRentParsed);
 
         //get house photos from databse
         for (int i = 0; i < searchResults.size(); i++) {

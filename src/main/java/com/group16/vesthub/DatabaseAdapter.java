@@ -181,7 +181,7 @@ public class DatabaseAdapter {
         return jdbcTemplate.query("SELECT * FROM reservations WHERE ownerMail = ? OR clientMail = ?", (rs, rowNum) -> new Reservation(rs.getInt("id"), rs.getInt("houseID"), rs.getString("ownerMail"), rs.getString("clientMail"), rs.getString("daytime"), rs.getString("date"), rs.getString("status"), rs.getString("message")), email, email);
     }
 
-    public List<House> getSearchResultsDB(String searchValue)
+    public List<House> getSearchResultsDB(String searchValue, String saleRent)
     {
         //parse the search value with spaces
         String[] searchValues = searchValue.split(" ");
@@ -227,7 +227,12 @@ public class DatabaseAdapter {
             }*/
         }
         System.out.println(query);
-
+        if(saleRent.equals("sale")){
+            query += "AND saleRent = '" + "Sale'";
+        }
+        else{
+            query += "AND saleRent = 'Rent'";
+        }
         
 
         return jdbcTemplate.query(query, (rs, rowNum) -> new House(rs.getInt("id"), rs.getInt("ownerID"), rs.getString("ownerMail") ,rs.getString("title"), rs.getString("description"), rs.getString("city"), rs.getString("distinct"), rs.getString("street"), rs.getString("country"), rs.getString("fullAddress"), rs.getInt("price"), rs.getInt("numOfBathroom"), rs.getInt("numOfBedroom"), rs.getString("numOfRooms"), rs.getInt("area"), rs.getDouble("lat"), rs.getDouble("lng"), rs.getString("saleRent"), rs.getInt("approved"), rs.getInt("floor"), rs.getInt("totalFloor"), rs.getInt("fiberInternet"), rs.getInt("airConditioner"), rs.getInt("floorHeating"), rs.getInt("fireplace"), rs.getInt("terrace"), rs.getInt("satellite"), rs.getInt("parquet"), rs.getInt("steelDoor"), rs.getInt("furnished"), rs.getInt("insulation"), rs.getString("status"), rs.getString("houseType"), null, null));
