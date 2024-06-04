@@ -178,8 +178,16 @@ public class DatabaseAdapter {
 
     public List<Reservation> getReservations(String email)
     {
+        //check for reservation date and if it is passed, change the status to if it is not accepted yet to "Passed" or "Accepted"
+        jdbcTemplate.update("UPDATE reservations SET status = 'Passed' WHERE date < NOW() AND status = 'Waiting'");
+        jdbcTemplate.update("UPDATE reservations SET status = 'Completed' WHERE date < NOW() AND status = 'Accepted' AND (ownerMail = ? OR clientMail = ?)", email, email);
         //inner join with users table
         return jdbcTemplate.query("SELECT * FROM reservations INNER JOIN users ON reservations.ownerMail = users.email WHERE clientMail = ? OR ownerMail = ?", (rs, rowNum) -> new Reservation(rs.getInt("id"), rs.getInt("houseID"), rs.getString("name"), rs.getString("profilePicture") , rs.getString("ownerMail"), rs.getString("clientMail"), rs.getString("daytime"), rs.getString("date"), rs.getString("status"), rs.getString("message")), email, email); 
+    }
+
+    public void updateReservationStatus(int id, String status)
+    {
+        jdbcTemplate.update("UPDATE reservations SET status = ? WHERE date < NOW()", status);
     }
 
     public List<House> getSearchResultsDB(String searchValue, String saleRent)
