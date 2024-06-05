@@ -288,12 +288,6 @@ public class DataController {
         if(!listingDateParsed.equals("All")){
             listingDateParsed = String.valueOf(listingDateParsed.charAt(4));
         }
-        if(maxPriceParsed<minPriceParsed){
-            //show alert
-        }
-        if(maxAreaParsed<minAreaParsed){
-            //show alert
-        }
 
         List<House> searchResults = dbAdapter.getSearchResultsDB(searchValue, saleRentParsed, houseTypeParsed, roomCountParsed, minPriceParsed, maxPriceParsed, minAreaParsed, maxAreaParsed, listingDateParsed, flagParsed, ownerMail);
 
