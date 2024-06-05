@@ -439,6 +439,24 @@ public class DataController {
     @GetMapping("/api/getReservations/{ownerMail}")
     public String getReservations(@PathVariable String ownerMail) {
         List<Reservation> reservations = dbAdapter.getReservations(ownerMail);
+        for (int i = 0; i < reservations.size(); i++) {
+            //set ownerProfilePicture
+            String ownerProfilePicture = reservations.get(i).getProfilePicture();
+            if (ownerProfilePicture != null) {
+                BufferedReader reader;
+                try {
+                    reader = new BufferedReader(new java.io.FileReader("src/profile-images/"+ownerProfilePicture));
+                    String line = reader.readLine();
+                    reservations.get(i).setProfilePicture(line);
+                    reader.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Owner Profile Picture: " + ownerProfilePicture);
+            }
+            //System.out.println("Owner Profile Picture: " + ownerProfilePicture);
+            
+        }
         ObjectMapper mapper = new ObjectMapper();
         try {
             String reservationsJson = mapper.writeValueAsString(reservations);
