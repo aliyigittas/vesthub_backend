@@ -7,12 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
 import java.util.Map;
 import javax.sql.DataSource;
 
-import org.apache.tomcat.jni.Buffer;
-import org.springframework.core.annotation.MergedAnnotations.Search;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.io.BufferedReader;
@@ -264,7 +261,7 @@ public class DatabaseAdapter {
         //parse the search value with spaces
         String[] searchValues = searchValue.split(" ");
         System.out.println("Array:"+ searchValues[0]);
-        int search_size =searchValues.length;
+        //int search_size =searchValues.length;
         String country = null;
         String city = null;
         String district = null;
@@ -276,7 +273,7 @@ public class DatabaseAdapter {
 
         String query = "";
         if(country==null && city ==null && district==null){
-            query = "SELECT * FROM houses WHERE houseID=-1 ";
+            query = "SELECT * FROM houses WHERE id=-1 ";
         }
         else{
             query = "SELECT * FROM houses ";
@@ -384,16 +381,94 @@ public class DatabaseAdapter {
         return query;
     }
 
-    public List<House> getSearchResultsDB(String searchValue, String saleRent, String houseType, String roomCount, int minPrice, int maxPrice, int minArea, int maxArea, String listingDate)
+    public String flagSituationSearchForQuery(String searchValue, int flag){
+        String query = "";
+        String country = null;
+        String city = null;
+        String district = null;
+
+        if(flag==0){
+            query += searchTextForQuery(searchValue);
+        }
+        else{
+            System.out.println("Genel:"+ searchValue);
+            query += "SELECT * FROM houses WHERE ";
+            if(!String.valueOf(searchValue.charAt(0)).equals(" ")){ //ilk gelen boş değilse yani country varsa
+                String countryParsed = searchValue.split(" ")[0];
+                country = getCountryMatch(countryParsed);
+                int lenOfCountry = countryParsed.length();
+                System.out.println("Country parsed length: " + lenOfCountry);
+                if(!String.valueOf(searchValue.charAt(lenOfCountry+1)).equals(" ")){ //city de varsa
+                    String cityParsed = searchValue.split(" ")[1];
+                    city = getCityMatch(cityParsed);
+                    if(!String.valueOf(searchValue.charAt(searchValue.length()-1)).equals(" ")){ //son char boş değilse yani district varsa
+                        String districtParsed = searchValue.split(" ")[2];
+                        district = getDistrictMatch(districtParsed);
+                    }
+                }
+                else if(!String.valueOf(searchValue.charAt(searchValue.length()-1)).equals(" ")){ //son char boş değilse yani district varsa
+                    String districtParsed = searchValue.split(" ")[2];
+                    district = getDistrictMatch(districtParsed);
+                }
+            }
+            else if(!String.valueOf(searchValue.charAt(2)).equals(" ")){ //city de varsa
+                String cityParsed = searchValue.split(" ")[1];
+                city = getCityMatch(cityParsed);
+                if(!String.valueOf(searchValue.charAt(searchValue.length()-1)).equals(" ")){ //son char boş değilse yani district varsa
+                    String districtParsed = searchValue.split(" ")[2];
+                    district = getDistrictMatch(districtParsed);
+                }
+            }
+            else if(!String.valueOf(searchValue.charAt(searchValue.length()-1)).equals(" ")){ //son char boş değilse yani district varsa
+                String districtParsed = searchValue.split(" ")[2];
+                district = getDistrictMatch(districtParsed);
+            }
+            
+            if(country!=null){
+                query += "country = '"+country+"' ";
+                if(city!=null){
+                    query += "AND city = '"+city+"' ";
+                    if(district!=null){
+                        query += "AND `distinct`= '"+district+"' ";
+                    }
+                }
+                else if(district!=null){
+                    query += "AND `distinct`= '"+district+"' ";
+                }
+            }
+            else if(city!=null){
+                query += "city = '"+city+"' ";
+                if(district!=null){
+                    query += "AND `distinct`= '"+district+"' ";
+                }
+            }
+            else if(district!=null){
+                query += "`distinct`= '"+district+"' ";
+            }
+            else {
+                query += "id = -1 ";
+            }
+        }
+        return query;
+    }
+
+    public List<House> getSearchResultsDB(String searchValue, String saleRent, String houseType, String roomCount, int minPrice, int maxPrice, int minArea, int maxArea, String listingDate, int flag)
     {
         String query = "";
-        query += searchTextForQuery(searchValue);
-        query += saleRentForQuery(saleRent);
-        query += houseTypeForQuery(houseType);
-        query += roomCountForQuery(roomCount);
-        query += priceForQuery(minPrice, maxPrice);
-        query += listingDateForQuery(listingDate);
 
+        if(searchValue.equals("  ")){
+            query = "SELECT * FROM houses WHERE id = -1";
+        }
+        
+        else{
+            query += flagSituationSearchForQuery(searchValue, flag);
+            query += saleRentForQuery(saleRent);
+            query += houseTypeForQuery(houseType);
+            query += roomCountForQuery(roomCount);
+            query += priceForQuery(minPrice, maxPrice);
+            query += areaForQuery(minArea, maxArea);
+            query += listingDateForQuery(listingDate);
+        }
         System.out.println(query);
 
         return jdbcTemplate.query(query, (rs, rowNum) -> new House(rs.getInt("id"), rs.getInt("ownerID"), rs.getString("ownerMail") ,rs.getString("title"), rs.getString("description"), rs.getString("city"), rs.getString("distinct"), rs.getString("street"), rs.getString("country"), rs.getString("fullAddress"), rs.getInt("price"), rs.getInt("numOfBathroom"), rs.getInt("numOfBedroom"), rs.getString("numOfRooms"), rs.getInt("area"), rs.getDouble("lat"), rs.getDouble("lng"), rs.getString("saleRent"), rs.getInt("approved"), rs.getInt("floor"), rs.getInt("totalFloor"), rs.getInt("fiberInternet"), rs.getInt("airConditioner"), rs.getInt("floorHeating"), rs.getInt("fireplace"), rs.getInt("terrace"), rs.getInt("satellite"), rs.getInt("parquet"), rs.getInt("steelDoor"), rs.getInt("furnished"), rs.getInt("insulation"), rs.getString("status"), rs.getString("houseType"), null, null));

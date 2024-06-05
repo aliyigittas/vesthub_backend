@@ -1,7 +1,5 @@
 package com.group16.vesthub;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,10 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import org.springframework.web.bind.annotation.PutMapping;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
 
 
 
@@ -249,7 +243,7 @@ public class DataController {
 
     @GetMapping("/api/search/{param}")
     public String getSearchResults(@PathVariable String param) {
-    
+
         //parse the string with & delimeter
         String[] params = param.split("&");
         String searchValue = params[0];
@@ -269,7 +263,9 @@ public class DataController {
         int maxAreaParsed = Integer.parseInt((maxArea.split("="))[1]);
         String listingDate = params[8];
         String listingDateParsed = (listingDate.split("="))[1];
-
+        String flag = params[9];
+        int flagParsed = Integer.parseInt((flag.split("="))[1]);
+       
         if(!listingDateParsed.equals("All")){
             listingDateParsed = String.valueOf(listingDateParsed.charAt(4));
         }
@@ -280,7 +276,7 @@ public class DataController {
             //show alert
         }
 
-        List<House> searchResults = dbAdapter.getSearchResultsDB(searchValue, saleRentParsed, houseTypeParsed, roomCountParsed, minPriceParsed, maxPriceParsed, minAreaParsed, maxAreaParsed, listingDateParsed);
+        List<House> searchResults = dbAdapter.getSearchResultsDB(searchValue, saleRentParsed, houseTypeParsed, roomCountParsed, minPriceParsed, maxPriceParsed, minAreaParsed, maxAreaParsed, listingDateParsed, flagParsed);
 
         //get house photos from databse
         for (int i = 0; i < searchResults.size(); i++) {
