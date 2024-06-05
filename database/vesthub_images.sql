@@ -36,7 +36,7 @@ CREATE TABLE `images` (
 
 LOCK TABLES `images` WRITE;
 /*!40000 ALTER TABLE `images` DISABLE KEYS */;
-INSERT INTO `images` VALUES (1,'1&0.txt'),(1,'1&1.txt'),(1,'1&2.txt'),(0,'0&0.txt'),(0,'0&1.txt'),(0,'0&2.txt'),(4,'4&0.txt'),(4,'4&1.txt'),(4,'4&2.txt'),(4,'4&3.txt'),(4,'4&4.txt'),(4,'4&5.txt'),(5,'5&0.txt'),(5,'5&1.txt'),(5,'5&2.txt'),(3,'3&0.txt'),(3,'3&1.txt'),(3,'3&2.txt'),(2,'2&0.txt'),(2,'2&1.txt'),(2,'2&2.txt');
+INSERT INTO `images` VALUES (1,'1&0.txt'),(1,'1&1.txt'),(1,'1&2.txt'),(0,'0&0.txt'),(0,'0&1.txt'),(0,'0&2.txt'),(4,'4&0.txt'),(4,'4&1.txt'),(4,'4&2.txt'),(4,'4&3.txt'),(4,'4&4.txt'),(4,'4&5.txt'),(5,'5&0.txt'),(5,'5&1.txt'),(5,'5&2.txt'),(3,'3&0.txt'),(3,'3&1.txt'),(3,'3&2.txt'),(2,'2&0.txt'),(2,'2&1.txt'),(2,'2&2.txt'),(6,'6&0.txt'),(6,'6&1.txt'),(6,'6&2.txt'),(7,'7&0.txt'),(7,'7&1.txt'),(7,'7&2.txt');
 /*!40000 ALTER TABLE `images` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +49,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-04 10:34:47
+-- Dump completed on 2024-06-05 18:36:06

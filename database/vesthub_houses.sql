@@ -34,7 +34,7 @@ CREATE TABLE `houses` (
   `street` varchar(100) NOT NULL,
   `country` varchar(45) NOT NULL,
   `fullAddress` varchar(1000) NOT NULL,
-  `price` int NOT NULL,
+  `price` varchar(1000) NOT NULL,
   `numOfBathroom` int NOT NULL,
   `numOfBedroom` int NOT NULL,
   `numOfRooms` varchar(45) NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE `houses` (
   `uploadDate` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +70,7 @@ CREATE TABLE `houses` (
 
 LOCK TABLES `houses` WRITE;
 /*!40000 ALTER TABLE `houses` DISABLE KEYS */;
-INSERT INTO `houses` VALUES (1,1,'ev 1','ev 1 acıklama','İstanbul','Fatih','Cibali','Türkiye','Cibali, Kadir Has Cd. No:1, 34083 Fatih/İstanbul, Türkiye',660,1,1,'2+1',75,41.0251673,28.9588656,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment','safak@f.com','2024-05-30 16:26:41'),(2,1,'ev 2','ev 2 acıklama','İstanbul','Fatih','Cibali','Türkiye','Cibali, Kadir Has Cd. No:1, 34083 Fatih/İstanbul, Türkiye',659997,1,1,'2+1',75,41.0251673,28.9588656,'Rent',0,2,5,1,1,1,0,1,1,0,1,1,1,'Available','Apartment','safak@f.com','2024-05-30 16:27:10'),(3,1,'EVVVV','EVVVVVVVVVVVVVVVVV','İstanbul','Gaziosmanpaşa','255. Sokak','Türkiye','Hürriyet, 255. Sk. No:10, 34250 Gaziosmanpaşa/İstanbul, Türkiye',12345,2,2,'3+1',22,41.0659081,28.9002822,'Rent',0,2,2,0,1,1,1,1,1,1,0,0,0,'Available','Apartment','safak@f.com','2024-05-31 02:38:25'),(4,1,'EV9999','sasasasaassasa','İstanbul','Gaziosmanpaşa','255. Sokak','Türkiye','Hürriyet, 255. Sk. No:10, 34250 Gaziosmanpaşa/İstanbul, Türkiye',2,111,11,'3+1',1,41.0659081,28.9002822,'Sale',0,2,3,0,0,0,0,0,0,0,0,0,0,'Available','Apartment','safak@f.com','2024-05-31 02:47:28'),(5,1,'Antalya Ev updated','lara ev','Antalya','Muratpaşa','Metin Kasapoğlu Caddesi','Türkiye','Yeşilbahçe, Metin Kasapoğlu Cd. No:46, 07160 Muratpaşa/Antalya, Türkiye',30000,2,2,'2+1',70,36.868124413471634,30.723379555078118,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment','safak@f.com','2024-05-31 18:34:06');
+INSERT INTO `houses` VALUES (1,1,'ev 1','ev 1 acıklama','İstanbul','Fatih','Cibali','Türkiye','Cibali, Kadir Has Cd. No:1, 34083 Fatih/İstanbul, Türkiye','660',1,1,'2+1',75,41.0251673,28.9588656,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Sold','Apartment','safak@f.com','2024-05-30 16:26:41'),(2,1,'ev 2','ev 2 acıklama','İstanbul','Fatih','Cibali','Türkiye','Cibali, Kadir Has Cd. No:1, 34083 Fatih/İstanbul, Türkiye','659997',1,1,'2+1',75,41.0251673,28.9588656,'Rent',0,2,5,1,1,1,0,1,1,0,1,1,1,'Rented','Apartment','safak@f.com','2024-05-30 16:27:10'),(3,1,'EVVVV','EVVVVVVVVVVVVVVVVV','İstanbul','Gaziosmanpaşa','255. Sokak','Türkiye','Hürriyet, 255. Sk. No:10, 34250 Gaziosmanpaşa/İstanbul, Türkiye','12345',2,2,'3+1',22,41.0659081,28.9002822,'Rent',0,2,2,0,1,1,1,1,1,1,0,0,0,'Available','Apartment','safak@f.com','2024-05-31 02:38:25'),(5,1,'Antalya Ev updated','lara ev','Antalya','Muratpaşa','Metin Kasapoğlu Caddesi','Türkiye','Yeşilbahçe, Metin Kasapoğlu Cd. No:46, 07160 Muratpaşa/Antalya, Türkiye','30000',2,2,'2+1',70,36.868124413471634,30.723379555078118,'Sale',0,2,5,0,0,0,0,0,0,0,0,0,0,'Available','Apartment','safak@f.com','2024-05-31 18:34:06'),(6,1,'Antalya\'da bir ev','Deneme için bir ev','Antalya','Kaş','Likya Caddesi','Türkiye','Andifli, Likya Cd. No:41, 07580 Kaş/Antalya, Türkiye','1250000',2,12,'3+1',1212,36.20308320645206,29.639567332635515,'Rent',0,22,22,1,1,0,1,1,1,0,1,1,0,'Available','Apartment','safak@f.com','2024-06-04 12:52:05'),(7,7,'5Haziran ev deneme','EVİMİN DETAYLARI','İstanbul','Fatih','Topkapı Sarayı','Türkiye','Cankurtaran, Topkapı Sarayı No:22, 34122 Fatih/İstanbul, Türkiye','20000',3,4,'4+1',120,41.0115195,28.98337889999999,'Rent',0,3,5,0,0,0,0,0,0,0,0,0,0,'Pending','Villa','aliyigit@ali.com','2024-06-05 18:31:19');
 /*!40000 ALTER TABLE `houses` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -83,4 +83,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-04 10:34:47
+-- Dump completed on 2024-06-05 18:36:06

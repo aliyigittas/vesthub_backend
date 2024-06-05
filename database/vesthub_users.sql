@@ -34,11 +34,11 @@ CREATE TABLE `users` (
   `fullAddress` varchar(45) NOT NULL,
   `city` varchar(45) NOT NULL,
   `country` varchar(45) NOT NULL DEFAULT 'Turkey',
-  `profilePicture` longblob,
+  `profilePicture` varchar(50) DEFAULT NULL,
   `status` tinyint NOT NULL,
   PRIMARY KEY (`userID`),
   UNIQUE KEY `userID_UNIQUE` (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +47,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'safak','safak','safak@f.com','','sa','','','',NULL,0),(2,'gf','dfg','fgd@fg.com','','123','','','',NULL,0),(3,'mamo','mamo','mamo@mami.com','','mami','','','',NULL,0),(4,'gdfgf','fd','safakh@f.com','','12','','','',NULL,0),(5,'gdfgf','fd','saffakh@f.com','','12','','','',NULL,0),(6,'Ali','Tas','aliailailialialiali@gmail.com','','123','','','',NULL,0),(7,'test','test2','testtest@trest.com','12345','123','adressssssssss','ISt','TR',NULL,1),(8,'admin','admin','admin@vesthub.com','12345','admin','admin home','Istanbul','TR',NULL,0);
+INSERT INTO `users` VALUES (1,'safak','safak','safak@f.com','','sa','','','',NULL,0),(2,'gf','dfg','fgd@fg.com','','123','','','',NULL,0),(3,'mamo','mamo','mamo@mami.com','','mami','','','',NULL,0),(4,'gdfgf','fd','safakh@f.com','','12','','','',NULL,0),(5,'gdfgf','fd','saffakh@f.com','','12','','','',NULL,0),(6,'Ali','Tas','aliailailialialiali@gmail.com','','123','','','',NULL,0),(7,'Ali yeni','Aslan yeni','aliyigit@ali.com','5355555550','123aA456','adressssssssss','ISt','TR',NULL,1),(8,'admin','admin','admin@vesthub.com','12345','admin','admin home','Istanbul','TR',NULL,0),(9,'Ali','Aslan','yeni@vesthub.com','5555555555','Ali123ali1234!','Evimin adresi','İstanbul','Türkiye',NULL,1),(10,'Photo deneme','photo','photo@photo.com','5555555555','Ali123ali123','Eminin adresi','İSTANBUL','TR',NULL,1),(11,'asasdasd','asdasdasd','aljshd@asd.com','5555555555','Ali123ali123','adddressssss','İST','TR',NULL,1),(12,'asdasds','asdasd','asdasd@asd.com','5555555555','Ali123ali123','addressssssss','İSt','TR',NULL,1),(13,'asdasdsssss','dasd','asssasa@ali.com','5555555555','Ali123ali123','EVİM','İstanbul','TR','13.txt',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -60,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-04 10:34:47
+-- Dump completed on 2024-06-05 18:36:06

@@ -34,7 +34,7 @@ CREATE TABLE `reservations` (
   `date` varchar(100) NOT NULL,
   `status` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
-INSERT INTO `reservations` VALUES (1,3,'safak@f.com','safak@f.com','Hocam önemli','Evening','2024-06-13 06:45','Waiting');
+INSERT INTO `reservations` VALUES (1,3,'safak@f.com','aliyigit@ali.com','Hocam önemli','Evening','2024-06-13','Cancelled'),(2,2,'testtest@trest.com','safak@f.com','Mesaj','Afternoon','2024-06-05','Passed'),(3,2,'testtest@trest.com','safak@f.com','TESTTTT','Evening','2024-06-21','Cancelled'),(4,2,'testtest@trest.com','safak@f.com','TESTTTT','Evening','2024-06-21','Cancelled'),(7,2,'testtest@trest.com','safak@f.com','','Evening','2024-06-18','Rejected'),(8,3,'testtest@trest.com','safak@f.com','','Morning','2024-06-01','Passed'),(9,3,'testtest@trest.com','safak@f.com','','Evening','2024-06-04','Passed');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-04 10:34:47
+-- Dump completed on 2024-06-05 18:36:06
