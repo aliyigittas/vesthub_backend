@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -638,6 +639,16 @@ public class DataController {
     @GetMapping("/api/getUser/{email}")
     public String getUser(@PathVariable String email) {
         User user = dbAdapter.getUserFromMail(email);
+        String profilePicturePath = user.getProfilePicture();
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new java.io.FileReader("src/profile-images/"+profilePicturePath));
+            String line = reader.readLine();
+            user.setProfilePicture(line);
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         ObjectMapper mapper = new ObjectMapper();
         try {
             String userJson = mapper.writeValueAsString(user);
@@ -696,11 +707,7 @@ public class DataController {
             e.printStackTrace();
             return false;
         }
-        
-        
     }
-    
-    
     
 }
 

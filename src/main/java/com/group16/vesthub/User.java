@@ -24,10 +24,10 @@ public class User
         this.surname = surname;
         this.email = email;
         this.password = password;
-        this.phone = "phone";
-        this.fullAddress = "fullAddress";
-        this.city = "city";
-        this.country = "country";
+        this.phone = phone;
+        this.fullAddress = fullAddress;
+        this.city = city;
+        this.country = country;
         this.status = 1;
         this.profilePicture = profilePicture;
     }
