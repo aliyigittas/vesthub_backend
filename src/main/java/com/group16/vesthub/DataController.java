@@ -207,9 +207,23 @@ public class DataController {
         }
     }
 
-    @GetMapping("api/featuredHomes")
-    public String getFeaturedHomes() {
-        List<House> featuredHomes = dbAdapter.getFeaturedHomes();
+    @PostMapping("api/featuredHomes")
+    public String getFeaturedHomes(@RequestBody String data) {     
+
+
+        // Initialize ObjectMapper
+        ObjectMapper mapper2 = new ObjectMapper();
+        String email = "";
+        String city = "";
+        try {
+            JsonNode rootNode = mapper2.readTree(data);
+            email = rootNode.get("email").asText();
+            city = rootNode.get("city").asText();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        List<House> featuredHomes = dbAdapter.getFeaturedHomes(email, city);
         //get house photos from databse
         for (int i = 0; i < featuredHomes.size(); i++) {
             String[] photos = dbAdapter.getPhotos(featuredHomes.get(i).getId());
@@ -220,10 +234,11 @@ public class DataController {
         try {
             String featuredHomesJson = mapper.writeValueAsString(featuredHomes);
             return featuredHomesJson;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
             return null;
         }
+        
     }
 
     @GetMapping("/api/sideFilter/{param}")
@@ -637,6 +652,26 @@ public class DataController {
             return false;
         }
     }
+
+    @PostMapping("/api/changeAvailability")
+    public boolean changeAvailability(@RequestBody String entity) {
+        try {
+            // Initialize ObjectMapper
+            ObjectMapper mapper = new ObjectMapper();
+            
+            // Parse JSON string to 
+            int houseID = mapper.readTree(entity).get("houseID").asInt();
+            String availability = mapper.readTree(entity).get("status").asText();
+            dbAdapter.updateHouseStatus(houseID, availability);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        
+        
+    }
+    
     
     
 }
