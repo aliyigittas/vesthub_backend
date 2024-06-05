@@ -617,6 +617,11 @@ public class DatabaseAdapter {
         return result == 1 ? true: false;
     }
 
+    public boolean alreadySentReservation(int houseID, String ownerMail, String clientMail){
+        int result = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM reservations WHERE houseID = ? AND ownerMail = ? AND clientMail = ?", Integer.class, houseID, ownerMail, clientMail);
+        return result == 1 ? true: false;
+    }
+
     public User getUserFromMail(String email)
     {
         return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email = ?", (rs, rowNum) -> new User(rs.getString("name"), rs.getString("surname"), rs.getString("email"), rs.getString("password"), rs.getString("phone"), rs.getString("fullAddress"), rs.getString("city"), rs.getString("country"), rs.getBoolean("status"), rs.getString("profilePicture")), email);
