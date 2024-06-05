@@ -218,8 +218,12 @@ public class DataController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        
         List<House> featuredHomes = dbAdapter.getFeaturedHomes(email, city, country);
+        if(email.equals("")){ //there is no one logged in
+            featuredHomes = dbAdapter.getFeaturedHomes(email, city, "Türkiye");
+        }
+        
         //get house photos from databse
         for (int i = 0; i < featuredHomes.size(); i++) {
             String[] photos = dbAdapter.getPhotos(featuredHomes.get(i).getId());
