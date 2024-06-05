@@ -209,15 +209,17 @@ public class DataController {
         ObjectMapper mapper2 = new ObjectMapper();
         String email = "";
         String city = "";
+        String country = "";
         try {
             JsonNode rootNode = mapper2.readTree(data);
             email = rootNode.get("email").asText();
             city = rootNode.get("city").asText();
+            country = rootNode.get("country").asText();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        List<House> featuredHomes = dbAdapter.getFeaturedHomes(email, city);
+        List<House> featuredHomes = dbAdapter.getFeaturedHomes(email, city, country);
         //get house photos from databse
         for (int i = 0; i < featuredHomes.size(); i++) {
             String[] photos = dbAdapter.getPhotos(featuredHomes.get(i).getId());
@@ -604,6 +606,33 @@ public class DataController {
             return false;
         }
     }
+
+    @PostMapping("api/updateAddressSettings")
+    public boolean updateAddressSettings(@RequestBody String entity) {
+        try {
+            // Initialize ObjectMapper
+            ObjectMapper mapper = new ObjectMapper();
+            
+            // Parse JSON string
+        JsonNode jsonNode = mapper.readTree(entity);
+        String email = jsonNode.get("email").asText();
+        String address = jsonNode.get("address").asText();
+        String city = jsonNode.get("city").asText();
+        String country = jsonNode.get("country").asText();
+            System.out.println("Email:" + email);
+            System.out.println("Address:"+ address);
+            System.out.println("City:"+ city);
+            System.out.println("Country:"+ country);
+            int ownerID = dbAdapter.getOwnerID(email);
+            return dbAdapter.changeAddressDB(ownerID, address, city, country);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        
+        
+    }
+    
     
     @GetMapping("/api/getUser/{email}")
     public String getUser(@PathVariable String email) {

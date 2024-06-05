@@ -537,10 +537,13 @@ public class DatabaseAdapter {
         return real_images.toArray(new String[real_images.size()]);
     }
 
-    public List<House> getFeaturedHomes (String email, String city)
+    public List<House> getFeaturedHomes (String email, String city, String country)
     {
-        return jdbcTemplate.query("SELECT * FROM houses WHERE status = 'Available' AND city = ? AND ownerMail != ?", (rs, rowNum) -> new House(rs.getInt("id"), rs.getInt("ownerID"), rs.getString("ownerMail") ,rs.getString("title"), rs.getString("description"), rs.getString("city"), rs.getString("distinct"), rs.getString("street"), rs.getString("country"), rs.getString("fullAddress"), rs.getInt("price"), rs.getInt("numOfBathroom"), rs.getInt("numOfBedroom"), rs.getString("numOfRooms"), rs.getInt("area"), rs.getDouble("lat"), rs.getDouble("lng"), rs.getString("saleRent"), rs.getInt("approved"), rs.getInt("floor"), rs.getInt("totalFloor"), rs.getInt("fiberInternet"), rs.getInt("airConditioner"), rs.getInt("floorHeating"), rs.getInt("fireplace"), rs.getInt("terrace"), rs.getInt("satellite"), rs.getInt("parquet"), rs.getInt("steelDoor"), rs.getInt("furnished"), rs.getInt("insulation"), rs.getString("status"), rs.getString("houseType"), null, null), city, email);
-        
+        List<House> featuredHouses = jdbcTemplate.query("SELECT * FROM houses WHERE status = 'Available' AND city = ? AND ownerMail != ?", (rs, rowNum) -> new House(rs.getInt("id"), rs.getInt("ownerID"), rs.getString("ownerMail") ,rs.getString("title"), rs.getString("description"), rs.getString("city"), rs.getString("distinct"), rs.getString("street"), rs.getString("country"), rs.getString("fullAddress"), rs.getInt("price"), rs.getInt("numOfBathroom"), rs.getInt("numOfBedroom"), rs.getString("numOfRooms"), rs.getInt("area"), rs.getDouble("lat"), rs.getDouble("lng"), rs.getString("saleRent"), rs.getInt("approved"), rs.getInt("floor"), rs.getInt("totalFloor"), rs.getInt("fiberInternet"), rs.getInt("airConditioner"), rs.getInt("floorHeating"), rs.getInt("fireplace"), rs.getInt("terrace"), rs.getInt("satellite"), rs.getInt("parquet"), rs.getInt("steelDoor"), rs.getInt("furnished"), rs.getInt("insulation"), rs.getString("status"), rs.getString("houseType"), null, null), city, email);
+        if(featuredHouses.size()<=4){
+            featuredHouses = jdbcTemplate.query("SELECT * FROM houses WHERE status = 'Available' AND country = ? AND ownerMail != ?", (rs, rowNum) -> new House(rs.getInt("id"), rs.getInt("ownerID"), rs.getString("ownerMail") ,rs.getString("title"), rs.getString("description"), rs.getString("city"), rs.getString("distinct"), rs.getString("street"), rs.getString("country"), rs.getString("fullAddress"), rs.getInt("price"), rs.getInt("numOfBathroom"), rs.getInt("numOfBedroom"), rs.getString("numOfRooms"), rs.getInt("area"), rs.getDouble("lat"), rs.getDouble("lng"), rs.getString("saleRent"), rs.getInt("approved"), rs.getInt("floor"), rs.getInt("totalFloor"), rs.getInt("fiberInternet"), rs.getInt("airConditioner"), rs.getInt("floorHeating"), rs.getInt("fireplace"), rs.getInt("terrace"), rs.getInt("satellite"), rs.getInt("parquet"), rs.getInt("steelDoor"), rs.getInt("furnished"), rs.getInt("insulation"), rs.getString("status"), rs.getString("houseType"), null, null), country, email);
+        }
+        return featuredHouses;
     }
 
     public House getHouseByID(int id)
@@ -607,6 +610,11 @@ public class DatabaseAdapter {
             System.out.println("Old password is wrong!!!!!!!!!!!!!!!!");
             return false;
         }
+    }
+
+    public boolean changeAddressDB(int ownerID, String address, String city, String country){
+        int result = jdbcTemplate.update("UPDATE users SET fullAddress = ?, city = ?, country = ? WHERE userID = ?", address, city, country, ownerID);
+        return result == 1 ? true: false;
     }
 
     public User getUserFromMail(String email)
