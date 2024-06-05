@@ -233,9 +233,9 @@ public class DataController {
         
         //create a json object
         HashMap<String, String> sideFilter = new HashMap<String, String>();
-        sideFilter.put("country", parsedResult[0]);
-        sideFilter.put("city", parsedResult[1]);
-        sideFilter.put("district", parsedResult[2]);
+        sideFilter.put("country", parsedResult[0] == null ? "": parsedResult[0]);
+        sideFilter.put("city", parsedResult[1] == null ? "": parsedResult[1]);
+        sideFilter.put("district", parsedResult[2] == null ? "": parsedResult[2]);
 
         ObjectMapper mapper = new ObjectMapper();
         try {

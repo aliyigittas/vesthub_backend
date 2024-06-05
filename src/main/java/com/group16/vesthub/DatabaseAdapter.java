@@ -276,7 +276,7 @@ public class DatabaseAdapter {
 
         String query = "";
         if(country==null && city ==null && district==null){
-            query = "SELECT * FROM houses WHERE houseID=-1";
+            query = "SELECT * FROM houses WHERE houseID=-1 ";
         }
         else{
             query = "SELECT * FROM houses ";
