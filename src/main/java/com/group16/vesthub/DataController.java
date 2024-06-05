@@ -256,8 +256,8 @@ public class DataController {
         }
     }
 
-    @GetMapping("/api/search/{param}")
-    public String getSearchResults(@PathVariable String param) {
+    @GetMapping("/api/search/{param}/{email}")
+    public String getSearchResults(@PathVariable String param, @PathVariable String email) {
 
         //parse the string with & delimeter
         String[] params = param.split("&");
@@ -280,6 +280,8 @@ public class DataController {
         String listingDateParsed = (listingDate.split("="))[1];
         String flag = params[9];
         int flagParsed = Integer.parseInt((flag.split("="))[1]);
+
+        String ownerMail = email;
        
         if(!listingDateParsed.equals("All")){
             listingDateParsed = String.valueOf(listingDateParsed.charAt(4));
@@ -291,7 +293,7 @@ public class DataController {
             //show alert
         }
 
-        List<House> searchResults = dbAdapter.getSearchResultsDB(searchValue, saleRentParsed, houseTypeParsed, roomCountParsed, minPriceParsed, maxPriceParsed, minAreaParsed, maxAreaParsed, listingDateParsed, flagParsed);
+        List<House> searchResults = dbAdapter.getSearchResultsDB(searchValue, saleRentParsed, houseTypeParsed, roomCountParsed, minPriceParsed, maxPriceParsed, minAreaParsed, maxAreaParsed, listingDateParsed, flagParsed, ownerMail);
 
         //get house photos from databse
         for (int i = 0; i < searchResults.size(); i++) {

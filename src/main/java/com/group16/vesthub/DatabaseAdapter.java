@@ -452,7 +452,7 @@ public class DatabaseAdapter {
         return query;
     }
 
-    public List<House> getSearchResultsDB(String searchValue, String saleRent, String houseType, String roomCount, int minPrice, int maxPrice, int minArea, int maxArea, String listingDate, int flag)
+    public List<House> getSearchResultsDB(String searchValue, String saleRent, String houseType, String roomCount, int minPrice, int maxPrice, int minArea, int maxArea, String listingDate, int flag, String email)
     {
         String query = "";
 
@@ -468,6 +468,8 @@ public class DatabaseAdapter {
             query += priceForQuery(minPrice, maxPrice);
             query += areaForQuery(minArea, maxArea);
             query += listingDateForQuery(listingDate);
+            query += "AND ownerMail != '"+email+"' ";
+            query += "AND status = 'Available' ";
         }
         System.out.println(query);
 
