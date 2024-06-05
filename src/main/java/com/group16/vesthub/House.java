@@ -12,7 +12,7 @@ public class House
     private String street;
     private String country;
     private String fullAddress;
-    private int price;
+    private String price;
     private int numOfBathroom;
     private int numOfBedroom;
     private String numOfRooms;
@@ -42,7 +42,7 @@ public class House
     {
     }
 
-    public House(int id, int ownerID, String ownerMail, String title, String description, String city, String distinct, String street, String country, String fullAddress, int price, int numOfBathroom, int numOfBedroom, String numOfRooms, int area, double lat, double lng, String saleRent, int approved, int floor, int totalFloor, int fiberInternet, int airConditioner, int floorHeating, int fireplace, int terrace, int satellite, int parquet, int steelDoor, int furnished, int insulation, String status, String houseType, String keyFeatures[], String images[]) 
+    public House(int id, int ownerID, String ownerMail, String title, String description, String city, String distinct, String street, String country, String fullAddress, String price, int numOfBathroom, int numOfBedroom, String numOfRooms, int area, double lat, double lng, String saleRent, int approved, int floor, int totalFloor, int fiberInternet, int airConditioner, int floorHeating, int fireplace, int terrace, int satellite, int parquet, int steelDoor, int furnished, int insulation, String status, String houseType, String keyFeatures[], String images[]) 
     {
         this.id = id;
         this.ownerID = ownerID;
@@ -181,12 +181,12 @@ public class House
         this.fullAddress = fullAddress;
     }
 
-    public int getPrice() 
+    public String getPrice() 
     {
         return price;
     }
 
-    public void setPrice(int price) 
+    public void setPrice(String price) 
     {
         this.price = price;
     }
