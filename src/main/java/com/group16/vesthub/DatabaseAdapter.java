@@ -618,7 +618,7 @@ public class DatabaseAdapter {
     }
 
     public boolean alreadySentReservation(int houseID, String ownerMail, String clientMail){
-        int result = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM reservations WHERE houseID = ? AND ownerMail = ? AND clientMail = ?", Integer.class, houseID, ownerMail, clientMail);
+        int result = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM reservations WHERE houseID = ? AND ownerMail = ? AND clientMail = ? AND status in ('Completed', 'Waiting', 'Accepted')", Integer.class, houseID, ownerMail, clientMail);
         return result == 1 ? true: false;
     }
 
