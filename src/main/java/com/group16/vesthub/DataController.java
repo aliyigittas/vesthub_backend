@@ -682,14 +682,16 @@ public class DataController {
     public String getUser(@PathVariable String email) {
         User user = dbAdapter.getUserFromMail(email);
         String profilePicturePath = user.getProfilePicture();
-        BufferedReader reader;
-        try {
-            reader = new BufferedReader(new java.io.FileReader("src/profile-images/"+profilePicturePath));
-            String line = reader.readLine();
-            user.setProfilePicture(line);
-            reader.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (profilePicturePath != null) {
+            BufferedReader reader;
+            try {
+                reader = new BufferedReader(new java.io.FileReader("src/profile-images/"+profilePicturePath));
+                String line = reader.readLine();
+                user.setProfilePicture(line);
+                reader.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         ObjectMapper mapper = new ObjectMapper();
         try {
