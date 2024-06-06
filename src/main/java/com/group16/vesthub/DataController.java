@@ -452,14 +452,38 @@ public class DataController {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                System.out.println("Owner Profile Picture: " + ownerProfilePicture);
             }
             //System.out.println("Owner Profile Picture: " + ownerProfilePicture);
             
         }
+
+        
         ObjectMapper mapper = new ObjectMapper();
         try {
             String reservationsJson = mapper.writeValueAsString(reservations);
+
+            for (int i = 0; i < reservations.size(); i++) 
+            {
+                User user = dbAdapter.getUserFromMail(reservations.get(i).getClientMail());
+                String clientProfilePicture = user.getProfilePicture();
+                if (clientProfilePicture != null) {
+                    BufferedReader reader;
+                    try {
+                        reader = new BufferedReader(new java.io.FileReader("src/profile-images/"+clientProfilePicture));
+                        String line = reader.readLine();
+                        user.setProfilePicture(line);
+                        reader.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                // add client name and profile picture to json directly
+                reservationsJson = reservationsJson.replaceFirst("\\{", "{\"clientName\":\"" + user.getName() + " " + user.getSurname() + "\",\"clientProfilePicture\":\"" + user.getProfilePicture() + "\",");
+
+            }
+
+
+
             return reservationsJson;
         } catch (Exception e) {
             e.printStackTrace();
