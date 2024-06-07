@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.BufferedReader;
@@ -477,12 +481,30 @@ public class DataController {
                         e.printStackTrace();
                     }
                 }
-                // add client name and profile picture to json directly
-                reservationsJson = reservationsJson.replaceFirst("\\{", "{\"clientName\":\"" + user.getName() + " " + user.getSurname() + "\",\"clientProfilePicture\":\"" + user.getProfilePicture() + "\",");
+                // append client name and profile picture to json directly
+                
+                //make the json string ready for sending
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode reservationsJsonNode = objectMapper.readTree(reservationsJson);
+                ((ObjectNode) reservationsJsonNode.get(i)).put("clientName", user.getName() + " " + user.getSurname());
+                ((ObjectNode) reservationsJsonNode.get(i)).put("clientProfilePicture", user.getProfilePicture());
+                reservationsJson = objectMapper.writeValueAsString(reservationsJsonNode);
+                
 
+
+
+                /*
+                JsonObject reservationJsonObject = JsonParser.parseString(mapper.writeValueAsString(reservations.get(i))).getAsJsonObject();
+                reservationJsonObject.addProperty("clientName", user.getName() + " " + user.getSurname());
+                reservationJsonObject.addProperty("clientProfilePicture", user.getProfilePicture());
+                reservationsJson = reservationJsonObject.toString();
+                */
+                
+                //System.out.println("Client Name from json: " + reservationJsonObject.get("clientName").getAsString());
+
+
+                //System.out.println(reservationsJson);
             }
-
-
 
             return reservationsJson;
         } catch (Exception e) {
