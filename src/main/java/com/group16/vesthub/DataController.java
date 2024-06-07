@@ -15,8 +15,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,8 +22,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-
-
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -39,8 +35,7 @@ public class DataController {
 
     @PostMapping("/api/login")
     public String receiveDataFromSignIn(@RequestBody String data) {
-
-        System.out.println("Received data from frontend: " + data); 
+        System.out.println("Called receiveDataFromSignIn with these parameters: " + data); 
         try 
         {
             // Initialize ObjectMapper
@@ -55,8 +50,6 @@ public class DataController {
                 // Get user from database
                 User userFromDB = dbAdapter.signIn(user.getEmail(), user.getPassword());
                 
-                
-
                 // Check if user exists
                 if (userFromDB != null) 
                 {
@@ -81,7 +74,8 @@ public class DataController {
     }
 
     @PostMapping("/api/register")
-    public boolean receiveDataFromSignUp(@RequestBody String data) {        
+    public boolean receiveDataFromSignUp(@RequestBody String data) {      
+        System.out.println("Called receiveDataFromSignUp with these parameters: " + data); 
         try 
         {
             // Initialize ObjectMapper
@@ -89,15 +83,7 @@ public class DataController {
             
             // Parse JSON string to User object
             User user = mapper.readValue(data, User.class);
-            //print only profilePicture from frontend using mapper
-            //System.out.println("User Photo: " + mapper.readTree(data).get("profilePicture").asText());
-            //System.out.println("User Photo: " + user.getProfilePicture());
-            // Print received data
 
-            
-
-
-            System.out.println("Received data from frontend: " + data);
             if (dbAdapter.checkUserExists(user.getEmail())) 
             {
                 return false;
@@ -128,12 +114,13 @@ public class DataController {
 
     @GetMapping("/api/getPhotos/{id}")
     public String[] getPhoto(@PathVariable int id) {
+        System.out.println("Called getPhoto with these parameters: " + id);
         return dbAdapter.getPhotos(id);
-        
     }
 
     @GetMapping("/api/myListings/{ownerMail}")
     public String getMyHouses(@PathVariable String ownerMail) {
+        System.out.println("Called getMyHouses with these parameters: " + ownerMail);
         int id = dbAdapter.getOwnerID(ownerMail);
         List<House> myHouses = dbAdapter.getMyHouses(id);
         for (int i = 0; i < myHouses.size(); i++) {
@@ -152,6 +139,7 @@ public class DataController {
 
     @GetMapping("/api/favorites/{ownerMail}")
     public String getMyFavorites(@PathVariable String ownerMail) {
+        System.out.println("Called getMyFavorites with these parameters: " + ownerMail);
         int id = dbAdapter.getOwnerID(ownerMail);
         List<House> myFavoriteHouses = dbAdapter.getMyFavorites(id);
         for (int i = 0; i < myFavoriteHouses.size(); i++) {
@@ -170,6 +158,7 @@ public class DataController {
 
     @PostMapping("/api/addFavorite")
     public boolean addFavorite(@RequestBody String data) {
+        System.out.println("Called addFavorite with these parameters: " + data);
         try {
             // Initialize ObjectMapper
             ObjectMapper mapper = new ObjectMapper();
@@ -189,6 +178,7 @@ public class DataController {
 
     @PostMapping("/api/removeFavorite")
     public boolean removeFavorite(@RequestBody String data) {
+        System.out.println("Called removeFavorite with these parameters: " + data);
         try {
             // Initialize ObjectMapper
             ObjectMapper mapper = new ObjectMapper();
@@ -207,9 +197,8 @@ public class DataController {
     }
 
     @PostMapping("api/featuredHomes")
-    public String getFeaturedHomes(@RequestBody String data) {     
-
-
+    public String getFeaturedHomes(@RequestBody String data) {
+        System.out.println("Called getFeaturedHomes with these parameters: " + data);
         // Initialize ObjectMapper
         ObjectMapper mapper2 = new ObjectMapper();
         String email = "";
@@ -234,7 +223,6 @@ public class DataController {
             String[] photos = dbAdapter.getPhotos(featuredHomes.get(i).getId());
             featuredHomes.get(i).setImages(photos);
         }
-        System.out.println("Featured Homes: " + featuredHomes.size());
         ObjectMapper mapper = new ObjectMapper();
         try {
             String featuredHomesJson = mapper.writeValueAsString(featuredHomes);
@@ -243,11 +231,11 @@ public class DataController {
             ex.printStackTrace();
             return null;
         }
-        
     }
 
     @GetMapping("/api/sideFilter/{param}")
     public String getSideFilter(@PathVariable String param) {
+        System.out.println("Called getSideFilter with these parameters: " + param);
         String[] params = param.split(" ");
         String[] parsedResult = dbAdapter.parseMatch(params);
         
@@ -269,7 +257,7 @@ public class DataController {
 
     @GetMapping("/api/search/{param}/{email}")
     public String getSearchResults(@PathVariable String param, @PathVariable String email) {
-
+        System.out.println("Called getSearchResults with these parameters: " + param + "," + email);
         //parse the string with & delimeter
         String[] params = param.split("&");
         String searchValue = params[0];
@@ -318,13 +306,11 @@ public class DataController {
     @PostMapping("/api/UpdateListing")
     public boolean receiveDataFromUpdateHouse(@RequestBody String data) 
     {
+        System.out.println("Called receiveDataFromUpdateHouse with these parameters: " + data);
         try 
         {
-            // Initialize ObjectMapper
             ObjectMapper mapper = new ObjectMapper();
-            
             JsonNode rootNode = mapper.readTree(data);
-
             // Extract keyFeatures array from the JsonNode
             JsonNode keyFeaturesNode = rootNode.get("keyFeatures");
             List<String> keyFeatures = mapper.convertValue(keyFeaturesNode, new TypeReference<List<String>>() {});
@@ -335,7 +321,6 @@ public class DataController {
             // Parse JSON string to House object
             House house = mapper.readValue(data, House.class);
             house.setOwnerID(VesthubApplication.currentlyLoggedIn); //owner
-            System.out.println("ID: " + house.getId());
             house.setApproved(0);
             //parse the keyfeatures array
             for (int i = 0; i < keyFeatures.size(); i++) {
@@ -365,7 +350,6 @@ public class DataController {
 
             //insert database
             dbAdapter.updateHouse(house.getId(), dbAdapter.getOwnerID(house.getOwnerMail()), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getCountry(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), house.getSaleRent(), house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), "Pending", house.getHouseType(), house.getOwnerMail());
-            System.out.println("HOUSE ID: " + house.getId());
             //update images
             dbAdapter.deleteImages(house.getId());
 
@@ -384,18 +368,15 @@ public class DataController {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                
-                
             }
-
 
             for (int i = 0; i < images.size(); i++) {
                 String fileName = house.getId() + "&" + i + ".txt";
-                
                 //save to a file 
                 // Using try-with-resources to ensure the file is closed properly
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter("src/home-images/"+fileName))) {
                     writer.write(images.get(i));
+                    System.out.println("Writing image to file: " + fileName);
                 } catch (IOException e) {
                     System.err.println("An IOException was caught: HATA image olmadı" + e.getMessage());
                 }
@@ -412,36 +393,28 @@ public class DataController {
     
     @PostMapping("/api/addReservation")
     public boolean addReservation(@RequestBody String entity) {
-        //add reservation to the class
+        System.out.println("Called addReservation with these parameters: " + entity);
         try {
-            // Initialize ObjectMapper
             ObjectMapper mapper = new ObjectMapper();
-            
             // Parse JSON string to User object
             Reservation reservation = mapper.readValue(entity, Reservation.class);
             if(dbAdapter.alreadySentReservation(reservation.getHouseID(), reservation.getOwnerMail(), reservation.getClientMail())){
                 return false;
             }
-            else{
+            else
+            {
                 dbAdapter.insertReservation(reservation.getHouseID(), reservation.getOwnerMail(), reservation.getClientMail(), reservation.getDaytime(), reservation.getDate(), reservation.getStatus(), reservation.getMessage());
-                System.out.println("Reservation daytime: " + reservation.getDaytime());
-                System.out.println("Reservation date: " + reservation.getDate());
-                System.out.println("Reservation houseID: " + reservation.getHouseID());
-                System.out.println("Reservation houseOwnerID: " + reservation.getOwnerMail());
-                System.out.println("Reservation clientID: " + reservation.getClientMail());
-                System.out.println("Reservation status: " + reservation.getStatus());
-                System.out.println("Reservation message: " + reservation.getMessage());
             }
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        
         return true;
     }
     
     @GetMapping("/api/getReservations/{ownerMail}")
     public String getReservations(@PathVariable String ownerMail) {
+        System.out.println("Called getReservations with these parameters: " + ownerMail);
         List<Reservation> reservations = dbAdapter.getReservations(ownerMail);
         for (int i = 0; i < reservations.size(); i++) {
             //set ownerProfilePicture
@@ -457,10 +430,7 @@ public class DataController {
                     e.printStackTrace();
                 }
             }
-            //System.out.println("Owner Profile Picture: " + ownerProfilePicture);
-            
         }
-
         
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -468,44 +438,34 @@ public class DataController {
 
             for (int i = 0; i < reservations.size(); i++) 
             {
-                User user = dbAdapter.getUserFromMail(reservations.get(i).getClientMail());
-                String clientProfilePicture = user.getProfilePicture();
+                User clientuser = dbAdapter.getUserFromMail(reservations.get(i).getClientMail());
+                User owneruser = dbAdapter.getUserFromMail(reservations.get(i).getOwnerMail());
+                String clientProfilePicture = clientuser.getProfilePicture();
                 if (clientProfilePicture != null) {
                     BufferedReader reader;
                     try {
                         reader = new BufferedReader(new java.io.FileReader("src/profile-images/"+clientProfilePicture));
                         String line = reader.readLine();
-                        user.setProfilePicture(line);
+                        clientuser.setProfilePicture(line);
                         reader.close();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-                // append client name and profile picture to json directly
-                
+                }                
                 //make the json string ready for sending
                 ObjectMapper objectMapper = new ObjectMapper();
                 JsonNode reservationsJsonNode = objectMapper.readTree(reservationsJson);
-                ((ObjectNode) reservationsJsonNode.get(i)).put("clientName", user.getName() + " " + user.getSurname());
-                ((ObjectNode) reservationsJsonNode.get(i)).put("clientProfilePicture", user.getProfilePicture());
+                //first remove ownerName from json
+                ((ObjectNode) reservationsJsonNode.get(i)).remove("ownerName");
+                
+                //concat owner name and surname as ownerName
+                ((ObjectNode) reservationsJsonNode.get(i)).put("ownerName", owneruser.getName() + " " + owneruser.getSurname());
+                
+                //concat client name and surname as clientName
+                ((ObjectNode) reservationsJsonNode.get(i)).put("clientName", clientuser.getName() + " " + clientuser.getSurname());
+                ((ObjectNode) reservationsJsonNode.get(i)).put("clientProfilePicture", clientuser.getProfilePicture());
                 reservationsJson = objectMapper.writeValueAsString(reservationsJsonNode);
-                
-
-
-
-                /*
-                JsonObject reservationJsonObject = JsonParser.parseString(mapper.writeValueAsString(reservations.get(i))).getAsJsonObject();
-                reservationJsonObject.addProperty("clientName", user.getName() + " " + user.getSurname());
-                reservationJsonObject.addProperty("clientProfilePicture", user.getProfilePicture());
-                reservationsJson = reservationJsonObject.toString();
-                */
-                
-                //System.out.println("Client Name from json: " + reservationJsonObject.get("clientName").getAsString());
-
-
-                //System.out.println(reservationsJson);
             }
-
             return reservationsJson;
         } catch (Exception e) {
             e.printStackTrace();
@@ -516,11 +476,10 @@ public class DataController {
     @PostMapping("/api/CreateListing")
     public boolean receiveDataFromAddHouse(@RequestBody String data) 
     {
+        System.out.println("Called receiveDataFromAddHouse with these parameters: " + data);
         try 
         {
-            // Initialize ObjectMapper
             ObjectMapper mapper = new ObjectMapper();
-            
             JsonNode rootNode = mapper.readTree(data);
 
             // Extract keyFeatures array from the JsonNode
@@ -530,9 +489,6 @@ public class DataController {
             JsonNode imagesNode = rootNode.get("images");
             List<String> images = mapper.convertValue(imagesNode, new TypeReference<List<String>>() {});
             
-          
-            
-
             // Parse JSON string to House object
             House house = mapper.readValue(data, House.class);
             house.setOwnerID(VesthubApplication.currentlyLoggedIn); //owner
@@ -565,7 +521,7 @@ public class DataController {
             dbAdapter.insertHouse(dbAdapter.getOwnerID(house.getOwnerMail()), house.getTitle(), house.getDescription(), house.getCity(), house.getDistinct(), house.getStreet(), house.getCountry(), house.getFullAddress(), house.getPrice(), house.getNumOfBathroom(), house.getNumOfBedroom(), house.getNumOfRooms(), house.getArea(), house.getLat(), house.getLng(), house.getSaleRent(), house.getApproved(), house.getFloor(), house.getTotalFloor(), house.getFiberInternet(), house.getAirConditioner(), house.getFloorHeating(), house.getFireplace(), house.getTerrace(), house.getSatellite(), house.getParquet(), house.getSteelDoor(), house.getFurnished(), house.getInsulation(), "Pending", house.getHouseType(), house.getOwnerMail());
             
             int lastHouseID = dbAdapter.getLatestHouseID();
-            System.out.println("Last house ID: " + lastHouseID);
+            //System.out.println("Last house ID: " + lastHouseID);
             for (int i = 0; i < images.size(); i++) {
                 String fileName = lastHouseID+ "&" + i + ".txt";
                 
@@ -590,7 +546,7 @@ public class DataController {
 
     @GetMapping("/api/house/{id}")
     public String getHouse(@PathVariable int id) {
-        // Get house ID from URL
+        System.out.println("Called getHouse with these parameters: " + id);
         House house = dbAdapter.getHouseByID(id);
         String[] photos = dbAdapter.getPhotos(id);
         house.setImages(photos);
@@ -606,11 +562,9 @@ public class DataController {
 
     @PostMapping("/api/updateReservationStatus")
     public boolean updateMeetingStatus(@RequestBody String entity) {
+        System.out.println("Called updateMeetingStatus with these parameters: " + entity);
         try {
-            // Initialize ObjectMapper
             ObjectMapper mapper = new ObjectMapper();
-            
-            // Parse JSON string to 
             int reservationID = mapper.readTree(entity).get("reservationID").asInt();
             String status = mapper.readTree(entity).get("meetingStatus").asText();
             dbAdapter.updateReservationStatusDB(reservationID, status);
@@ -619,26 +573,21 @@ public class DataController {
             e.printStackTrace();
             return false;
         }
-        
-        
     }
     
-
     @GetMapping("/api/checkFavorite")
     public String checkFavorite(@RequestParam int houseID, @RequestParam String ownerMail) {
+        System.out.println("Called checkFavorite with these parameters: " + houseID + "," + ownerMail);
         int ownerID = dbAdapter.getOwnerID(ownerMail);
-        System.out.println("Check ownerId:"+ownerID);
         boolean isFavorite = dbAdapter.checkFavorite(ownerID, houseID, 1); 
         return isFavorite ? "true" : "false";
     }
 
     @PostMapping("/api/updateProfileInfo")
     public boolean updateProfileInfo(@RequestBody String entity) {
+        System.out.println("Called updateProfileInfo with these parameters: " + entity);
         try {
-            // Initialize ObjectMapper
             ObjectMapper mapper = new ObjectMapper();
-            
-            // Parse JSON string to 
             String newEmail = mapper.readTree(entity).get("newEmail").asText();
             String oldEmail = mapper.readTree(entity).get("oldEmail").asText();
             String name = mapper.readTree(entity).get("name").asText();
@@ -654,17 +603,15 @@ public class DataController {
 
     @PostMapping("/api/changePassword")
     public boolean changePassword(@RequestBody String entity) {
+        System.out.println("Called changePassword with these parameters: " + entity);
         try {
-            // Initialize ObjectMapper
             ObjectMapper mapper = new ObjectMapper();
-            
-            // Parse JSON string to 
             String email = mapper.readTree(entity).get("email").asText();
             String oldPassword = mapper.readTree(entity).get("currentPassword").asText();
             String newPassword = mapper.readTree(entity).get("newPassword").asText();
-            System.out.println("Email: " + email);
-            System.out.println("Old Password: " + oldPassword);
-            System.out.println("New Password: " + newPassword);
+            //System.out.println("Email: " + email);
+            //System.out.println("Old Password: " + oldPassword);
+            //System.out.println("New Password: " + newPassword);
             int ownerID = dbAdapter.getOwnerID(email);
             return dbAdapter.changePasswordDB(ownerID, oldPassword, newPassword);
         } catch (Exception e) {
@@ -675,33 +622,25 @@ public class DataController {
 
     @PostMapping("api/updateAddressSettings")
     public boolean updateAddressSettings(@RequestBody String entity) {
+        System.out.println("Called updateAddressSettings with these parameters: " + entity);
         try {
-            // Initialize ObjectMapper
             ObjectMapper mapper = new ObjectMapper();
-            
-            // Parse JSON string
-        JsonNode jsonNode = mapper.readTree(entity);
-        String email = jsonNode.get("email").asText();
-        String address = jsonNode.get("address").asText();
-        String city = jsonNode.get("city").asText();
-        String country = jsonNode.get("country").asText();
-            System.out.println("Email:" + email);
-            System.out.println("Address:"+ address);
-            System.out.println("City:"+ city);
-            System.out.println("Country:"+ country);
+            JsonNode jsonNode = mapper.readTree(entity);
+            String email = jsonNode.get("email").asText();
+            String address = jsonNode.get("address").asText();
+            String city = jsonNode.get("city").asText();
+            String country = jsonNode.get("country").asText();
             int ownerID = dbAdapter.getOwnerID(email);
             return dbAdapter.changeAddressDB(ownerID, address, city, country);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
-        
-        
     }
-    
     
     @GetMapping("/api/getUser/{email}")
     public String getUser(@PathVariable String email) {
+        System.out.println("Called getUser with these parameters: " + email);
         User user = dbAdapter.getUserFromMail(email);
         String profilePicturePath = user.getProfilePicture();
         if (profilePicturePath != null) {
@@ -727,6 +666,7 @@ public class DataController {
 
     @GetMapping("/api/adminListings")
     public String getAdminHouses() {
+        System.out.println("Called getAdminHouses");
         List<House> adminHouses = dbAdapter.getAdminHouses();
         for (int i = 0; i < adminHouses.size(); i++) {
             String[] photos = dbAdapter.getPhotos(adminHouses.get(i).getId());
@@ -744,6 +684,7 @@ public class DataController {
 
     @PostMapping("/api/updateStatus")
     public boolean updateStatus(@RequestBody String data) {
+        System.out.println("Called updateStatus with these parameters: " + data);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode rootNode;
         try {
@@ -760,11 +701,9 @@ public class DataController {
 
     @PostMapping("/api/changeAvailability")
     public boolean changeAvailability(@RequestBody String entity) {
+        System.out.println("Called changeAvailability with these parameters: " + entity);
         try {
-            // Initialize ObjectMapper
             ObjectMapper mapper = new ObjectMapper();
-            
-            // Parse JSON string to 
             int houseID = mapper.readTree(entity).get("houseID").asInt();
             String availability = mapper.readTree(entity).get("status").asText();
             dbAdapter.updateHouseStatus(houseID, availability);
@@ -774,6 +713,5 @@ public class DataController {
             return false;
         }
     }
-    
 }
 

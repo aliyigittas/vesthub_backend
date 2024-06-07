@@ -1,9 +1,7 @@
 package com.group16.vesthub;
 
 import org.springframework.web.bind.annotation.RestController;
-import com.google.gson.Gson;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,23 +25,6 @@ public class DatabaseAdapter {
 
     public DatabaseAdapter(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
-    public List<String> getAllUsernames() {
-        return jdbcTemplate.queryForList("SELECT name FROM user", String.class);
-    }
-
-    //get everything from the database
-    public List<Map<String, Object>> getAllFromDB() {
-        return jdbcTemplate.queryForList("SELECT name, surname FROM user");
-    }
-
-    @GetMapping("/getFromDB")
-    public String getFromDB() {
-        //List<String> usernames = getAllUsernames();
-        List<Map<String, Object>> resultSet = getAllFromDB();
-        Gson gson = new Gson();
-        return gson.toJson(resultSet);
     }
 
     public void insertUser(String name, String surname, String email, String phone, String password, String fullAddress, String city, String country, int status) 
@@ -89,7 +70,6 @@ public class DatabaseAdapter {
                 reader = new BufferedReader(fileReader);
                 // Read the file line by line
                 user.setProfilePicture(reader.readLine());
-                System.out.println("Profile picture: " + user.getProfilePicture());
             } catch (IOException e) {
                 // Handle potential IOException
                 System.err.println("An IOException was caught: " + e.getMessage());
@@ -104,20 +84,17 @@ public class DatabaseAdapter {
                 }
             }
         }
-
         //if there is no such user
         if (user.getName() == null) 
         {
             return null;
         }
-        
         return user;
     }
 
-    public int getOwnerID(String email){
+    public int getOwnerID(String email)
+    {
         return jdbcTemplate.queryForObject("SELECT userID FROM users WHERE email = ?", Integer.class, email);
-
-        //return id;
     }
 
     public int getLatestHouseID() 
@@ -141,7 +118,6 @@ public class DatabaseAdapter {
 
         for (int i = 0; i < searchValues.length; i++)
         {
-
             if (response[0]==null)
             {
                 if(getCountryMatch(searchValues[i]) != null && response[1]!=searchValues[i] && response[2]!=searchValues[i]) 
@@ -252,16 +228,13 @@ public class DatabaseAdapter {
             System.out.println("Invalid time format: " + e.getMessage());
         }
 
-        //System.out.println(query);
         jdbcTemplate.update(query, status, currentStatus);
-        
     }
 
     public String searchTextForQuery (String searchValue){
         //parse the search value with spaces
         String[] searchValues = searchValue.split(" ");
-        System.out.println("Array:"+ searchValues[0]);
-        //int search_size =searchValues.length;
+        //System.out.println("Array:"+ searchValues[0]);
         String country = null;
         String city = null;
         String district = null;
@@ -391,13 +364,11 @@ public class DatabaseAdapter {
             query += searchTextForQuery(searchValue);
         }
         else{
-            System.out.println("Genel:"+ searchValue);
             query += "SELECT * FROM houses WHERE ";
             if(!String.valueOf(searchValue.charAt(0)).equals(" ")){ //ilk gelen boş değilse yani country varsa
                 String countryParsed = searchValue.split(" ")[0];
                 country = getCountryMatch(countryParsed);
                 int lenOfCountry = countryParsed.length();
-                System.out.println("Country parsed length: " + lenOfCountry);
                 if(!String.valueOf(searchValue.charAt(lenOfCountry+1)).equals(" ")){ //city de varsa
                     String cityParsed = searchValue.split(" ")[1];
                     city = getCityMatch(cityParsed);
@@ -502,8 +473,6 @@ public class DatabaseAdapter {
 
         List<String> real_images = new ArrayList<String>();
 
-        System.out.println(images.size());
-
         // Initialize BufferedReader
         BufferedReader reader = null;
 
@@ -532,8 +501,6 @@ public class DatabaseAdapter {
                 }
             }
         }
-        
-
         return real_images.toArray(new String[real_images.size()]);
     }
 
@@ -549,7 +516,6 @@ public class DatabaseAdapter {
     public House getHouseByID(int id)
     {
         return jdbcTemplate.queryForObject("SELECT * FROM houses WHERE id = ?", (rs, rowNum) -> new House(rs.getInt("id"), rs.getInt("ownerID"), rs.getString("ownerMail") ,rs.getString("title"), rs.getString("description"), rs.getString("city"), rs.getString("distinct"), rs.getString("street"), rs.getString("country"), rs.getString("fullAddress"), rs.getString("price"), rs.getInt("numOfBathroom"), rs.getInt("numOfBedroom"), rs.getString("numOfRooms"), rs.getInt("area"), rs.getDouble("lat"), rs.getDouble("lng"), rs.getString("saleRent"), rs.getInt("approved"), rs.getInt("floor"), rs.getInt("totalFloor"), rs.getInt("fiberInternet"), rs.getInt("airConditioner"), rs.getInt("floorHeating"), rs.getInt("fireplace"), rs.getInt("terrace"), rs.getInt("satellite"), rs.getInt("parquet"), rs.getInt("steelDoor"), rs.getInt("furnished"), rs.getInt("insulation"), rs.getString("status"), rs.getString("houseType"), null, null), id);
-        //return new House();
     }
 
     public List<House> getMyHouses(int id)
@@ -607,7 +573,7 @@ public class DatabaseAdapter {
         }
         else
         {
-            System.out.println("Old password is wrong!!!!!!!!!!!!!!!!");
+            System.out.println("Old password is wrong!");
             return false;
         }
     }
@@ -636,5 +602,4 @@ public class DatabaseAdapter {
     {
         jdbcTemplate.update("UPDATE houses SET status = ? WHERE id = ?", status, houseID);
     }
-    
 }

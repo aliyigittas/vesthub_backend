@@ -12,5 +12,4 @@ public class VesthubApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(VesthubApplication.class, args);
 	}
-
 }
