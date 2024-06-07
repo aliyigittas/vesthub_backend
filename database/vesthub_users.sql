@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `vesthub` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `vesthub`;
--- MySQL dump 10.13  Distrib 8.0.34, for macos13 (arm64)
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: localhost    Database: vesthub
 -- ------------------------------------------------------
--- Server version	8.3.0
+-- Server version	8.0.35
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -38,7 +38,7 @@ CREATE TABLE `users` (
   `status` tinyint NOT NULL,
   PRIMARY KEY (`userID`),
   UNIQUE KEY `userID_UNIQUE` (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +47,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'safak','safak','safak@f.com','','sa','','','',NULL,0),(2,'gf','dfg','fgd@fg.com','','123','','','',NULL,0),(3,'mamo','mamo','mamo@mami.com','','mami','','','',NULL,0),(4,'gdfgf','fd','safakh@f.com','','12','','','',NULL,0),(5,'gdfgf','fd','saffakh@f.com','','12','','','',NULL,0),(6,'Ali','Tas','aliailailialialiali@gmail.com','','123','','','',NULL,0),(7,'Ali yeni','Aslan yeni','aliyigit@ali.com','5355555550','123aA456','adressssssssss','ISt','TR',NULL,1),(8,'admin','admin','admin@vesthub.com','12345','admin','admin home','Istanbul','TR',NULL,0),(9,'Ali','Aslan','yeni@vesthub.com','5555555555','Ali123ali1234!','Evimin adresi','İstanbul','Türkiye',NULL,1),(10,'Photo deneme','photo','photo@photo.com','5555555555','Ali123ali123','Eminin adresi','İSTANBUL','TR',NULL,1),(11,'asasdasd','asdasdasd','aljshd@asd.com','5555555555','Ali123ali123','adddressssss','İST','TR',NULL,1),(12,'asdasds','asdasd','asdasd@asd.com','5555555555','Ali123ali123','addressssssss','İSt','TR',NULL,1),(13,'asdasdsssss','dasd','asssasa@ali.com','5555555555','Ali123ali123','EVİM','İstanbul','TR','13.txt',1);
+INSERT INTO `users` VALUES (1,'admin','admin','admin@vesthub.com','5555555555','Admin123','Easter egg','İstanbul','Türkiye','1.txt',1),(2,'Şevval','Çetin','sevvalcetin@gmail.com','5353905123','Abc1234.','Easter egg','Antalya','Türkiye','2.txt',1),(3,'Şafak','Gün','safakgun@gmail.com','5364127854','Abc1234.','Easter egg','Ankara','Türkiye','3.txt',1),(4,'Ali','Taş','alitas@gmail.com','5214689785','Abc1234.','Easter egg','İzmir','Türkiye','4.txt',1),(5,'Mehmet','Kuzucu','mehmetkuzucu@gmail.com','5345896451','Abc1234.','Easter egg','Kayseri','Türkiye','5.txt',1),(6,'Baran','Aslan','baranaslan@gmail.com','5321458962','Abc1234.','Easter egg','Malatya','Türkiye','6.txt',1),(7,'Turgut','Yılmaz','turgutyilmaz@gmail.com','5324658974','Abc1234.','Easter egg','Ankara','Türkiye','7.txt',1),(8,'Ekrem','Yıldırım','ekremyildirim@gmail.com','5364897512','Abc1234.','Easter egg','İstanbul','Türkiye','8.txt',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -60,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-05 18:36:06
+-- Dump completed on 2024-06-07 14:44:49

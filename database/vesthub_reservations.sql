@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `vesthub` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `vesthub`;
--- MySQL dump 10.13  Distrib 8.0.34, for macos13 (arm64)
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: localhost    Database: vesthub
 -- ------------------------------------------------------
--- Server version	8.3.0
+-- Server version	8.0.35
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,14 +27,14 @@ DROP TABLE IF EXISTS `reservations`;
 CREATE TABLE `reservations` (
   `id` int NOT NULL AUTO_INCREMENT,
   `houseID` int NOT NULL,
-  `clientMail` varchar(100) NOT NULL,
-  `ownerMail` varchar(100) NOT NULL,
-  `message` varchar(1000) DEFAULT NULL,
-  `daytime` varchar(45) NOT NULL,
   `date` varchar(100) NOT NULL,
-  `status` varchar(45) NOT NULL,
+  `ownerMail` varchar(100) NOT NULL,
+  `clientMail` varchar(100) NOT NULL,
+  `daytime` varchar(100) NOT NULL,
+  `status` varchar(100) NOT NULL,
+  `message` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
-INSERT INTO `reservations` VALUES (1,3,'safak@f.com','aliyigit@ali.com','Hocam önemli','Evening','2024-06-13','Cancelled'),(2,2,'testtest@trest.com','safak@f.com','Mesaj','Afternoon','2024-06-05','Passed'),(3,2,'testtest@trest.com','safak@f.com','TESTTTT','Evening','2024-06-21','Cancelled'),(4,2,'testtest@trest.com','safak@f.com','TESTTTT','Evening','2024-06-21','Cancelled'),(7,2,'testtest@trest.com','safak@f.com','','Evening','2024-06-18','Rejected'),(8,3,'testtest@trest.com','safak@f.com','','Morning','2024-06-01','Passed'),(9,3,'testtest@trest.com','safak@f.com','','Evening','2024-06-04','Passed');
+INSERT INTO `reservations` VALUES (1,33,'2024-06-10','baranaslan@gmail.com','alitas@gmail.com','All','Waiting','Görüşmek istiyorum. '),(2,42,'2024-06-12','ekremyildirim@gmail.com','alitas@gmail.com','Morning','Accepted','Merhabalar, evinizi çok beğendim. Evi görmeyi çok isterim.'),(3,47,'2024-06-09','ekremyildirim@gmail.com','alitas@gmail.com','Evening','Accepted',''),(4,18,'2024-06-11','safakgun@gmail.com','baranaslan@gmail.com','All','Waiting',''),(5,2,'2024-06-14','turgutyilmaz@gmail.com','baranaslan@gmail.com','All','Waiting','Umarım evi gezdirme şansı bulabilirsiniz.'),(6,39,'2024-06-09','ekremyildirim@gmail.com','mehmetkuzucu@gmail.com','Evening','Waiting',''),(7,26,'2024-06-18','alitas@gmail.com','mehmetkuzucu@gmail.com','All','Waiting',''),(8,21,'2024-06-12','mehmetkuzucu@gmail.com','sevvalcetin@gmail.com','All','Waiting',''),(9,18,'2024-06-13','safakgun@gmail.com','sevvalcetin@gmail.com','All','Waiting',''),(10,5,'2024-06-09','turgutyilmaz@gmail.com','alitas@gmail.com','All','Waiting',''),(11,48,'2024-06-11','ekremyildirim@gmail.com','alitas@gmail.com','Afternoon','Waiting',''),(12,40,'2024-06-23','ekremyildirim@gmail.com','alitas@gmail.com','Morning','Waiting','');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-05 18:36:06
+-- Dump completed on 2024-06-07 14:44:49
